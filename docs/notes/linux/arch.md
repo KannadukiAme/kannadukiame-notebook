@@ -200,7 +200,25 @@ passwd
 
 ### 添加用户
 
-useradd
+添加名为madoka的用户
+
+```bash
+useradd -m madoka
+```
+
+为madoka设置密码
+```bash
+passwd madoka
+```
+
+使用visudo加入到sudoers
+
+```bash
+visudo
+
+# /etc/sudoers
+madoka ALL=(ALL) ALL
+```
 
 ### SSH
 
