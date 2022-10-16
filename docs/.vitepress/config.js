@@ -1,20 +1,21 @@
 module.exports = {
-  title: '雨ノ圓',
-  description: 'The notebook of KannadukiAme',
-  base: '/',
-  dest: './dist',
+  title: '雨之书',
+  description: 'The book of KannadukiAme',
+  lastUpdated: true,
   themeConfig: {
-    repo: 'https://github.com/KannadukiAme/kannadukiame-notebook.git',
-    repoLabel: 'GitHub',
+    lastUpdatedText: '最近更新',
+    socialLinks: [
+      { icon: 'github', link: 'https://github.com/KannadukiAme/kannadukiame-notebook.git' }
+    ],
     nav: [
       { text: '首页', link: '/' },
-      { text: '笔记', link: '/notes/linux/arch' }
+      { text: '笔记', link: '/notes/linux/arch', activeMatch: '/notes/' },
     ],
     sidebar: [
       {
         text: '系统相关',
-        collapsable: false,
-        children: [
+        collapsible: true,
+        items: [
           {
             text:'Arch',link:'/notes/linux/arch'
           },
@@ -37,8 +38,8 @@ module.exports = {
       },
       {
         text: '虚拟化技术',
-        collapsable: false,
-        children: [
+        collapsible: true,
+        items: [
           {
             text:'Docker',link:'/notes/virtualization/docker'
           },
@@ -49,8 +50,8 @@ module.exports = {
       },
       {
         text: '系统工具',
-        collapsable: false,
-        children: [
+        collapsible: true,
+        items: [
           {
             text:'SSH',link:'/notes/system-tools/ssh'
           }
@@ -58,8 +59,8 @@ module.exports = {
       },
       {
         text: '编辑器',
-        collapsable: false,
-        children: [
+        collapsible: true,
+        items: [
           {
             text:'Vim',link:'/notes/editor/vim'
           },
@@ -70,8 +71,8 @@ module.exports = {
       },
       {
         text: 'Web开发',
-        collapsable: false,
-        children: [
+        collapsible: true,
+        items: [
           {
             text:'代码风格',link:'/notes/web-development/code-style'
           },
@@ -85,8 +86,8 @@ module.exports = {
       },
       {
         text: 'Web服务',
-        collapsable: false,
-        children: [
+        collapsible: true,
+        items: [
           {
             text:'私人网盘 Nextcloud',link:'/notes/web-server/nextcloud'
           },
@@ -96,6 +97,8 @@ module.exports = {
         ]
       }
     ],
-    lastUpdated: '最近更新'
+    footer: {
+      copyright: 'MIT Licensed | Copyright © 2019-2022 KannadukiAme'
+    }
   }
 }

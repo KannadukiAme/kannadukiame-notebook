@@ -140,7 +140,7 @@ VSCode插件
 
 ## EditorConfig
 
-```conf
+```
 # .editorconfig
 root = true
 
