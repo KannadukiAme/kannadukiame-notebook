@@ -1,34 +1,70 @@
 # VSCode
 
-> 记录vscode编辑器的个人喜好以及习惯设定
+VSCode是一款免费的轻量级代码编辑工具(与重量级的开发集成环境不同)，目前类似代码编辑工具的有Notepad++, Sublime Text等。非常适用于开发前端web页面以及nodejs后端程序，也可编辑一些简单的python脚本。
 
-## 使用习惯
+## Extensions & Config 插件及配置
 
-主题
+个人必备插件列表清单
 
-- Ayu
-
-插件
-
-- Chinese (Simplified) Language Pack for Visual Studio Code (简体中文语言包)
-- Vetur (Vue支持)
-- language-stylus (stylus支持)
-- Manta's Stylus Supremacy (stylus格式化)
+- EditorConfig for VS Code
+- GitHub Theme (Github Light/Dark主题必需)
+- Volar (Vue3开发支持)
+- Git Graph
 - GitLens
-- VSC Mikutap (music)
-- Debugger for Chrome (调试工具)
+- Remote Development(包含Remote - SSH, WSL, Dev Containers三个插件)
 
-字体
+### EditorConfig 代码风格设置
+
+.editorconfig一般配置如下
+
+```
+[*.{js,jsx,ts,tsx,vue}]
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = true
+insert_final_newline = true
+```
+
+js/ts代码每行缩进设定为2个空格。这似乎是js代码的默认风格，不要问为什么，也不要随意更改。其他语言代码风格可自行按照喜好设置。
+
+完整的editorconfig配置文档可参考[这里](https://editorconfig.org/)。
+
+### Remote - SSH 插件
+
+非常适用于服务器远程开发，一般推荐使用ssh密钥登录，因为使用密码登录每次都需要输入两次，非常不方便。
+
+VSCode提供ssh_config登录配置文件，大致如下配置，注意指定的私钥文件路径即可。
+
+```
+Host alias
+    HostName 192.168.x.xx
+    User xxx
+    IdentityFile xxx\.ssh\id_rsa
+```
+
+::: warning 注意事项
+
+该插件必须要勾选图中的设置，否则无法输入密码登录ssh
+
+:::
+
+![vscode-remote-ssh-settings](/img/vscode-remote-ssh-settings.jpg)
+
+## Preferences 个人偏好
+
+Theme 主题
+
+- Github Light/Dark
+
+Font 字体
 
 ```
 'Cascadia Code',Microsoft Yahei UI Light, Consolas, 'Courier New', monospace
 ```
 
-::: tip 提示
-Cascadia Code字体需要在[此处](https://github.com/microsoft/cascadia-code)的git仓库下载
-:::
+Cascadia Code字体文件在[这里](https://github.com/microsoft/cascadia-code)下载。
 
-Cascadia Code字体配置
+字体配置
 
 ```json
 {
@@ -37,9 +73,9 @@ Cascadia Code字体配置
 }
 ```
 
-## 配置文件
+## setting.json 完整配置
 
-setting.json
+仅供备份与参考，随时会根据需要更新。
 
 ```json
 {
@@ -75,24 +111,3 @@ setting.json
   }
 }
 ```
-
-## Remote-SSH
-
-非常适用服务器远程开发，一般推荐使用ssh密钥登录，因为使用密码登录每次都需要输入两次，非常不方便。
-
-vscode提供ssh_config登录配置文件，大致如下配置，注意指定的私钥文件路径即可。
-
-```
-Host alias
-    HostName 192.168.x.xx
-    User xxx
-    IdentityFile xxx\.ssh\id_rsa
-```
-
-::: warning 注意事项
-
-该插件必须要勾选图中的设置，否则无法输入密码登录ssh
-
-:::
-
-![vscode-remote-ssh-settings](/img/vscode-remote-ssh-settings.jpg)
