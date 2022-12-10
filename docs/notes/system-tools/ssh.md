@@ -58,7 +58,9 @@ id_rsa.pub # 公钥
 
 windows下产生ssh密钥对：
 
-由于没有ssh-keygen工具，可以通过xshell工具来产生。
+win10系统自带ssh-keygen工具，与linux下操作一致。
+
+或者也可以通过xshell工具来产生。
 
 以xshell6为例：
 
@@ -80,9 +82,8 @@ windows下产生ssh密钥对：
 
 至此得到两个文件:
 
-id_ras_2048.pub(公钥)
-
-id_ras_2048(私钥)
+- id_ras_2048.pub(公钥)
+- id_ras_2048(私钥)
 
 公钥放置在需登陆的远程主机上
 

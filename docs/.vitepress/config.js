@@ -17,7 +17,10 @@ module.exports = {
         collapsible: true,
         items: [
           {
-            text:'VSCode',link:'/notes/editor/vscode'
+            text: 'VSCode', link: '/notes/editor/vscode',
+          },
+          {
+            text: 'SSH', link: '/notes/system-tools/ssh'
           }
         ]
       }
