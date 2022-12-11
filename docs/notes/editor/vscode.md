@@ -9,7 +9,6 @@ VSCode是一款免费的轻量级代码编辑工具(与重量级的开发集成�
 - EditorConfig for VS Code
 - GitHub Theme (Github Light/Dark主题必需)
 - Volar (Vue3开发支持)
-- Git Graph
 - GitLens
 - Remote Development(包含Remote - SSH, WSL, Dev Containers三个插件)
 
