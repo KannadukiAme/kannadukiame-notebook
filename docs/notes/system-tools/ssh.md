@@ -1,22 +1,20 @@
 # OpenSSH
 
-> ssh是一种安全链接远程服务器的通讯协议
+ssh是一种安全链接远程服务器的通讯协议，OpenSSH则是基于ssh协议实现的一系列工具套件。
 
-## 客户端
+## 套件内容
 
-Win平台：
+OpenSSH包含以下工具:
 
-- Xshell
+- Client Side(客户端):ssh, scp, sftp
+- Key Management(密钥管理):ssh-add, ssh-keysign, ssh-keygen
+- Server Side(服务端):sshd, sftp-server, ssh-agent
 
-- PuTTY
+## sshd的安装与配置
 
-Linux/Unix:
+绝大部分的Linux发行版都是内置sshd无需另外安装，Windows下则需要自行安装。
 
-终端自带ssh命令
-
-## 配置
-
-Linux(Arch):
+在使用root登录时，需要在配置文件中允许root登录。
 
 ```bash
 # /etc/ssh/sshd_config
@@ -25,23 +23,25 @@ Linux(Arch):
 PermitRootLogin yes
 ```
 
-## 登陆
+## ssh命令的使用
 
-ssh登陆的两种方式
+Linux和Windows默认都是内置ssh命令工具的。
 
-1. 通过密码登陆
+使用ssh远程登陆使用如下
 
 ```bash
 ssh root@remote.com # 使用root账号登陆远程主机remote.com(可以是IP地址)
 
-# 根据提示符输入密码即可登陆
+ssh -p PORT # 指定端口，默认23
 
-# 也可以使用sshpass来指定密码登陆，但是没有实践成功
+# 根据提示符输入密码即可登陆, 注意密码是不会显示在屏幕上，连星号都不会出现。
+
+# 也可以使用sshpass来指定密码直接登陆
 ```
 
-2. 通过产生ssh密钥对免密码登陆
+如果要使用ssh密钥免密码登录，则需要ssh-keygen工具来生成私钥和公钥。
 
-linux下产生ssh密钥：
+具体操作方法如下所示。
 
 ```bash
 ssh-keygen -t rsa
@@ -49,69 +49,21 @@ ssh-keygen -t rsa
 # 不要输入密码
 ```
 
-产生如下密钥对：
+产生如下密钥对。
+
+- id_rsa(私钥)
+- id_rsa.pub(公钥)
+
+私钥放置在客户端上，公钥放置在需登陆的远程主机上。
 
 ```bash
-id_rsa # 私钥
-id_rsa.pub # 公钥
-```
-
-windows下产生ssh密钥对：
-
-win10系统自带ssh-keygen工具，与linux下操作一致。
-
-或者也可以通过xshell工具来产生。
-
-以xshell6为例：
-
-![ssh-1](/img/ssh-1.jpg)
-
-![ssh-2](/img/ssh-2.jpg)
-
-![ssh-3](/img/ssh-3.jpg)
-
-![ssh-4](/img/ssh-4.jpg)
-
-![ssh-5](/img/ssh-5.jpg)
-
-![ssh-6](/img/ssh-6.jpg)
-
-![ssh-7](/img/ssh-7.jpg)
-
-![ssh-8](/img/ssh-8.jpg)
-
-至此得到两个文件:
-
-- id_ras_2048.pub(公钥)
-- id_ras_2048(私钥)
-
-公钥放置在需登陆的远程主机上
-
-```bash
+# 以下两种操作选择其一即可
 # 在远程主机上执行
 cat id_rsa.pub >> ~/.ssh/authorized_keys
-```
 
-或者
-
-```bash
-# 在本地主机上执行
+# 在客户端上执行
 ssh-copy-id -i /root/.ssh/id_rsa.pub root@remote.com
 ```
-
-私钥放置在本机上
-
-linux下:
-
-直接ssh登陆
-
-```bash
-ssh root@remote.com
-```
-
-windows下:
-
-xshell设置指定私钥文件即可登陆。
 
 ::: warning 注意事项
 
@@ -121,10 +73,18 @@ authorized_keys的权限 600
 
 :::
 
-## 清理缓存
+清理缓存
 
 ```bash
 # ~/.ssh/known_hosts
 
-删除对应IP的密钥即可
+# 删除对应IP的密钥即可
 ```
+
+## scp命令的使用
+
+## sftp命令的使用
+
+## 参考链接
+
+1. [OpenSSH官网](https://www.openssh.com/)
