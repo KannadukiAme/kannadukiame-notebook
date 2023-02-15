@@ -8,5 +8,5 @@ hero:
   actions:
     - theme: brand
       text: 开始阅读
-      link: /notes/editor/vscode
+      link: /notes/sora
 ---

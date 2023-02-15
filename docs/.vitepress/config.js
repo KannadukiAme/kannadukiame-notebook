@@ -5,7 +5,10 @@ module.exports = {
   themeConfig: {
     lastUpdatedText: '最近更新',
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/KannadukiAme/kannadukiame-notebook.git' }
+      {
+        icon: 'github',
+        link: 'https://github.com/KannadukiAme/kannadukiame-notebook.git',
+      },
     ],
     nav: [
       { text: '首页', link: '/' },
@@ -13,17 +16,29 @@ module.exports = {
     ],
     sidebar: [
       {
+        text: '现役女仆',
+        collapsible: true,
+        items: [
+          {
+            text: 'SORA(Raspberry Pi 3 Model B)',
+            link: '/notes/sora.md',
+          },
+        ],
+      },
+      {
         text: '工具偏好',
         collapsible: true,
         items: [
           {
-            text: 'VSCode', link: '/notes/editor/vscode',
+            text: 'VSCode',
+            link: '/notes/editor/vscode',
           },
           {
-            text: 'SSH', link: '/notes/system-tools/ssh'
-          }
-        ]
-      }
+            text: 'SSH',
+            link: '/notes/system-tools/ssh',
+          },
+        ],
+      },
     ],
     // sidebar: [
     //   {
@@ -112,7 +127,7 @@ module.exports = {
     //   }
     // ],
     footer: {
-      copyright: 'MIT Licensed | Copyright © 2019-2022 KannadukiAme'
-    }
-  }
+      copyright: 'Copyright © 2019-2023 KannadukiAme',
+    },
+  },
 }
