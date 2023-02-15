@@ -1,4 +1,5 @@
-module.exports = {
+import { defineConfig } from 'vitepress'
+export default defineConfig({
   title: '雨之书',
   description: 'The book of KannadukiAme',
   lastUpdated: true,
@@ -17,13 +18,13 @@ module.exports = {
     sidebar: [
       {
         text: '现役女仆',
-        collapsible: true,
         items: [
           {
             text: 'SORA(Raspberry Pi 3 Model B)',
             link: '/notes/sora.md',
           },
         ],
+        collapsible: true,
       },
       {
         text: '工具偏好',
@@ -40,6 +41,10 @@ module.exports = {
         ],
       },
     ],
+    docFooter: {
+      prev: '<-',
+      next: '->',
+    },
     // sidebar: [
     //   {
     //     text: '系统相关',
@@ -130,4 +135,4 @@ module.exports = {
       copyright: 'Copyright © 2019-2023 KannadukiAme',
     },
   },
-}
+})
