@@ -11,6 +11,7 @@ export default defineConfig({
         link: 'https://github.com/KannadukiAme/kannadukiame-notebook.git',
       },
     ],
+    outline: [2, 6],
     nav: [
       { text: '首页', link: '/' },
       { text: '笔记', link: '/notes/editor/vscode', activeMatch: '/notes/' },
