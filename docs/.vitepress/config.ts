@@ -14,7 +14,7 @@ export default defineConfig({
     outline: [2, 6],
     nav: [
       { text: '首页', link: '/' },
-      { text: '笔记', link: '/notes/editor/vscode', activeMatch: '/notes/' },
+      { text: '笔记', link: '/notes/sora.md', activeMatch: '/notes/' },
     ],
     sidebar: [
       {
@@ -23,6 +23,10 @@ export default defineConfig({
           {
             text: 'SORA(Raspberry Pi 3 Model B)',
             link: '/notes/sora.md',
+          },
+          {
+            text: 'MISAKI(Proxmox VE)',
+            link: '/notes/misaki.md',
           },
         ],
         collapsible: true,
