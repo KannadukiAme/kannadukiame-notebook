@@ -7,7 +7,7 @@ MISAKI 是主力家用女仆，专为家庭提供云盘存储、媒体等服务�
 - 4x Cores Intel Core i5-7300U
 - 8GB RAM
 - 128G SSD mSATA & 250GB SSD SATA
-- 6x 1000Mbps Ethernet
+- 6x Ethernet ports
 - 2x USB2 ports & 2x USB3 ports
 
 ## 安装 Proxmox VE
@@ -19,7 +19,7 @@ Proxmox VE 是开源的虚拟化管理平台，基于 Debian 系统，非常适�
 
 开机启动时选择优先 U 盘启动，跟随安装指示就可以轻松完成。
 
-安装过程中，需要设定 Web 管理端的 IP 地址，这里设置为 `192.168.2.3`。
+安装过程中，需要设定 Web 管理端的 IP 地址，这里设置为 `192.168.2.3` 。
 
 安装完毕后，进入 `https://192.168.2.3:8006` 就可以开始创建虚拟机了。
 
@@ -27,7 +27,7 @@ Proxmox VE 是开源的虚拟化管理平台，基于 Debian 系统，非常适�
 
 这里选择使用 qcow2 镜像，比起 iso 镜像安装方式不知快了多少倍。好在 Archlinux 官网提供了 qcow2 镜像下载，可以节省不少时间。
 
-1. 在 Proxmox VE 上创建虚拟机
+1. **在 Proxmox VE 上创建虚拟机**
 
 ![图3](/img/misaki/3.jpg)
 
@@ -35,7 +35,7 @@ Proxmox VE 是开源的虚拟化管理平台，基于 Debian 系统，非常适�
 
 选择不使用任何介质，磁盘类型选 `VirtIO Block`，其余根据需要自行设置。
 
-2. 上传 qcow2 镜像
+2. **上传 qcow2 镜像**
 
 进入到事先下载好的 archlinux 镜像文件所在目录
 
@@ -45,7 +45,7 @@ Proxmox VE 是开源的虚拟化管理平台，基于 Debian 系统，非常适�
 scp archlinux.qcow2 root@192.168.2.3:/var/lib/vz/template/archlinux.qcow2
 ```
 
-3. 导入 qcow2 镜像
+3. **导入 qcow2 镜像**
 
 进入 `/var/lib/vz/template` 目录，执行导入操作
 
@@ -53,13 +53,13 @@ scp archlinux.qcow2 root@192.168.2.3:/var/lib/vz/template/archlinux.qcow2
 qm importdisk 100 archlinux.qcow2 local-lvm
 ```
 
-4. 将转好的虚拟硬盘挂载到虚拟机上
+4. **将转好的虚拟硬盘挂载到虚拟机上**
 
 ## 配置虚拟机
 
 ::: info
 安装好以后，记得修改 root 账号与默认用户的密码。  
-root 账号密码为空，默认用户账号名与密码都是 `arch`。
+root 账号密码为空，默认用户账号名与密码都是 arch。
 :::
 
 ### 设置静态 IP
@@ -102,7 +102,7 @@ systemctl start docker
 ls /dev/disk/by-id/
 ```
 
-图 1
+![图5](/img/misaki/5.jpg)
 
 然后执行以下命令
 
@@ -112,39 +112,39 @@ qm set 100 --sata0 /dev/disk/by-id/ata-Samsung_SSD_750_EVO_250GB_S32LNWAH636762K
 
 100 为虚拟机 id，--sata0 指定硬盘类型和序号，/dev/disk/by-id/xxx 指定该硬盘
 
-图 2
+## 在虚拟机上部署 Docker 容器
 
-### 读写 NTFS 分区
+根据实际需要，目前可部署以下服务的 Docker 容器
 
-安装 `ntfs-3g`
+- Nextcloud 私人云盘
+- Jellyfin 媒体播放
+
+::: tip 读写 NTFS 分区
+
+如果挂载的硬盘分区是 NTFS 类型，需要额外装 `ntfs-3g`
 
 ```bash
 pacman -S ntfs-3g
 ```
 
-挂载到/mnt/sda2 目录下
+挂载到 `/mnt/sda2` 目录下
 
 ```bash
 mount /dev/sda2 /mnt/sda2
 ```
 
-## 在虚拟机上部署 Docker 容器
-
-根据实际需要，可部署以下服务的 Docker 容器
-
-- Nextcloud 私人云盘
-- Jellyfin 媒体播放
+:::
 
 ### 部署 Nextcloud 服务
 
 直接使用 Dockerhub 上 Nextcloud 提供的 docker-compose 配置模板。为了方便备份和测试，没有使用 volume 管理。
 
-::: info
-不要用官网的提供的那个 AIO Docker 镜像，默认是需要域名验证的，后续配置十分麻烦，架设在内网上的不需要那么多额外的服务。  
-当然如果是架设在公网上，并且有现成的域名，那可以直接使用。
+::: info PS
+不要使用官网的提供的那个 AIO Docker 镜像，默认是需要域名验证的，后续配置十分麻烦，架设在内网上的不需要那么多额外配置。  
+当然如果是架设在公网上，并且有现成的域名，可以直接使用官方的 AIO Docker 镜像。
 :::
 
-```xml
+```yml
 version: '2'
 
 services:
@@ -193,6 +193,30 @@ services:
 
 ### 部署 Jellyfin 服务
 
+直接使用官方提供的 `docker-compose` 配置模板
+
+```yml
+version: '3.5'
+services:
+  jellyfin:
+    image: jellyfin/jellyfin
+    container_name: jellyfin
+    network_mode: 'host'
+    volumes:
+      - ./config:/config
+      - ./cache:/cache
+      - /mnt/sda2:/media
+    restart: 'unless-stopped'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+```
+
+`/mnt/sda2` 虚拟机挂载外部存储目录
+
+部署完毕后，进入 `http://192.168.2.4:8096` 开始配置
+
 ## 参考链接
 
 - [Proxmox VE 官网](https://www.proxmox.com/)
+- [Nextcloud 官网](https://nextcloud.com)
+- [Jellyfin 官网](https://jellyfin.org/)
