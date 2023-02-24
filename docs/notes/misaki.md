@@ -116,11 +116,11 @@ qm set 100 --sata0 /dev/disk/by-id/ata-Samsung_SSD_750_EVO_250GB_S32LNWAH636762K
 
 根据实际需要，目前可部署以下服务的 Docker 容器
 
-- Nextcloud 私人云盘
-- Jellyfin 媒体播放
+- Portainer **Docker 容器在线管理**
+- Nextcloud **私人云盘**
+- Jellyfin **媒体播放**
 
 ::: tip 读写 NTFS 分区
-
 如果挂载的硬盘分区是 NTFS 类型，需要额外装 `ntfs-3g`
 
 ```bash
@@ -134,6 +134,30 @@ mount /dev/sda2 /mnt/sda2
 ```
 
 :::
+
+### 部署 Portainer 服务
+
+这里使用社区版 `portainer-ce`
+
+docker-compose 配置模板如下
+
+```yml
+version: '3'
+services:
+  app:
+    image: portainer/portainer-ce:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./data:/data
+    ports:
+      - 8000:8000
+      # - 9000:9000 for use http
+      - 9443:9443
+```
+
+容器内 `/data` 目录是 Portainer 服务存放数据库所在目录，`9000` 端口为 http 使用，`9443` 端口为 https 使用。
+
+进入 `https://192.168.2.4:9443` 即可开始创建管理账号使用。
 
 ### 部署 Nextcloud 服务
 
@@ -218,5 +242,6 @@ services:
 ## 参考链接
 
 - [Proxmox VE 官网](https://www.proxmox.com/)
+- [Portainer 官网](https://www.portainer.io/)
 - [Nextcloud 官网](https://nextcloud.com)
 - [Jellyfin 官网](https://jellyfin.org/)
