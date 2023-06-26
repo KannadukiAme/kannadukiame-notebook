@@ -32,6 +32,16 @@ export default defineConfig({
         collapsible: true,
       },
       {
+        text: '系统相关',
+        items: [
+          {
+            text: 'OpenWrt',
+            link: '/notes/linux/openwrt.md',
+          },
+        ],
+        collapsible: true,
+      },
+      {
         text: '工具偏好',
         collapsible: true,
         items: [
