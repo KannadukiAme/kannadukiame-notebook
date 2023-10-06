@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "vitepress dev docs",
     "build": "vitepress build docs",
-    "serve": "vitepress serve docs"
+    "preview": "vitepress preview docs"
   },
   "devDependencies": {
     "vitepress": "1.0.0-rc.20",
