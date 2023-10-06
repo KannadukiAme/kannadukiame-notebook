@@ -1,7 +1,6 @@
 :root {
-  --vp-c-brand: hsl(189, 49%, 67%);
-  --vp-c-brand-light: hsl(189, 49%, 77%);
-  --vp-c-brand-lighter: hsl(189, 49%, 87%);
-  --vp-c-brand-dark: hsl(189, 49%, 47%);
-  --vp-c-brand-darker: hsl(189, 49%, 37%);
+  --vp-c-brand-1: hsl(189, 49%, 47%);
+  --vp-c-brand-2: hsl(189, 49%, 67%);
+  --vp-c-brand-3: hsl(189, 49%, 37%);
+  --vp-c-brand-soft: rgba(48, 127, 141, 0.14);
 }

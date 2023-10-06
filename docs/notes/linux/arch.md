@@ -1,12 +1,14 @@
-# Arch
+# Archlinux
 
-> 记录 archlinux 的安装与配置
+> 基于 Linux 系统的轻量级发行版，拥有强大的社区支持。
 
-## 安装前的准备工作
+## 安装
+
+archlinux 的安装过程极为繁琐，基本上每一步都需要自己来操作。初次安装，想要成功需得折腾个把小时，甚至几天才能搞定。不过可以学习到很多关于 linux 系统的一些细节。
 
 ### 下载镜像与烧录
 
-[下载镜像](https://www.archlinux.org/download/)
+在 archlinux 官网上下载[镜像](https://www.archlinux.org/download/)
 
 将下载好的镜像写入 U 盘
 
@@ -84,8 +86,6 @@ mount /dev/sdx1 /mnt/efi
 mkswap /dev/sdX2
 swapon /dev/sdX2
 ```
-
-## 安装
 
 ### 设置源
 
@@ -213,6 +213,18 @@ grub-mkconfig -o /boot/grub/grub.cfg
 pacman -S base-devel linux-headers linux-lts
 ```
 
+### 更新系统
+
+```bash
+# 初始化密钥
+pacman-key --init
+# 获取密钥
+pacman-key --populate
+
+# 更新系统
+pacman -Syu
+```
+
 ### 设置 root 密码
 
 ```bash
@@ -242,22 +254,73 @@ visudo
 madoka ALL=(ALL) ALL
 ```
 
+## 使用
+
 ### SSH
 
+安装 `openssh` 包
+
 ```bash
-# 安装ssh
 pacman -S openssh
+```
 
-# 编辑/etc/ssh/sshd_config
-PermitRootLogin yes #允许远程root登陆
+::: details 配置
+编辑/etc/ssh/sshd_config
 
-# 启用ssh服务
+```
+#PermitRootLogin prohibit-password // [!code  --]
+PermitRootLogin yes // [!code  ++]
+```
+
+:::
+开机自动加载 sshd 服务
+
+```bash
 systemctl enable sshd
 systemctl start sshd
 ```
 
+### Docker
+
+安装 `docker` `docker-compose` 包
+
+```bash
+pacman -S docker docker-compose
+```
+
+开机自动加载 Docker 服务
+
+```bash
+systemctl enable docker
+systemctl start docker
+```
+
+### 挂载 ntfs 分区
+
+安装 `ntfs-3g` 包
+
+```bash
+pacman -S ntfs-3g
+```
+
+假设 sda2 分区为 ntfs 格式，使用 `ntfs-3g` 挂载 sda2 分区
+
+```bash
+ntfs-3g /dev/sda2 /mnt/ntfs
+```
+
+在挂载 ntfs 分区时，如果遇到以下问题
+
+![](/img/misaki/6.jpg)
+
+输入以下命令修复 ntfs 分区即可
+
+```bash
+ntfsfix /dev/sda2
+```
+
 ## 参考链接
 
-1. [arch 安装向导](https://wiki.archlinux.org/index.php/Installation_guide)
-2. [mirrors 生成器](https://www.archlinux.org/mirrorlist/)
-3. [GRUB](https://wiki.archlinux.org/index.php/GRUB)
+- [arch 安装向导](https://wiki.archlinux.org/index.php/Installation_guide)
+- [mirrors 生成器](https://www.archlinux.org/mirrorlist/)
+- [GRUB](https://wiki.archlinux.org/index.php/GRUB)
