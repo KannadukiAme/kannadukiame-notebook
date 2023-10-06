@@ -1,8 +1,15 @@
 export default {
   title: '雨之书',
   description: 'The book of KannadukiAme',
+  lastUpdated: true,
   themeConfig: {
-    lastUpdatedText: '最近更新',
+    lastUpdated: {
+      text: '最近更新',
+      formatOptions: {
+        dateStyle: 'medium',
+        timeStyle: 'medium',
+      },
+    },
     socialLinks: [
       {
         icon: 'github',

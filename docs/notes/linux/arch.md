@@ -264,15 +264,19 @@ madoka ALL=(ALL) ALL
 pacman -S openssh
 ```
 
-::: details 配置
-编辑/etc/ssh/sshd_config
+::: info PS
 
-```
-#PermitRootLogin prohibit-password // [!code  --]
-PermitRootLogin yes // [!code  ++]
+如果需要在远程登录 root 账户
+
+编辑 `/etc/ssh/sshd_config` 配置文件
+
+```ssh-config
+#PermitRootLogin prohibit-password // [!code --]
+PermitRootLogin yes // [!code ++]
 ```
 
 :::
+
 开机自动加载 sshd 服务
 
 ```bash
