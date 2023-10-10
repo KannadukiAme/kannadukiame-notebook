@@ -6,6 +6,10 @@
 
 archlinux 的安装过程极为繁琐，基本上每一步都需要自己来操作。初次安装，想要成功需得折腾个把小时，甚至几天才能搞定。不过可以学习到很多关于 linux 系统的一些细节。
 
+::: details 快速安装
+如果想要跳过繁琐的安装过程，可以使用镜像提供的快速安装工具 `archinstall`
+:::
+
 ### 下载镜像与烧录
 
 在 archlinux 官网上下载[镜像](https://www.archlinux.org/download/)
@@ -323,8 +327,37 @@ ntfs-3g /dev/sda2 /mnt/ntfs
 ntfsfix /dev/sda2
 ```
 
+### AUR
+
+使用 `yay` 命令来安装 AUR 所维护的工具包，用法与 `pacman` 相似
+
+```bash
+yay -S xxx
+```
+
+从 git 仓库上构建 `yay` 包
+
+```bash
+pacman -S --needed git base-devel
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si
+```
+
+### 镜像
+
+安装 `reflector` 包
+
+```bash
+pacman -S reflector
+```
+
+该命令会将最快的镜像列表生成到 `/etc/pacman.d/mirrorlist`
+
 ## 参考链接
 
-- [arch 安装向导](https://wiki.archlinux.org/index.php/Installation_guide)
-- [mirrors 生成器](https://www.archlinux.org/mirrorlist/)
+- [archlinux 安装向导](https://wiki.archlinux.org/index.php/Installation_guide)
+- [archinstall](https://wiki.archlinux.org/title/Archinstall)
 - [GRUB](https://wiki.archlinux.org/index.php/GRUB)
+- [mirrors 生成器](https://www.archlinux.org/mirrorlist/)
+- [yay](https://github.com/Jguer/yay)
