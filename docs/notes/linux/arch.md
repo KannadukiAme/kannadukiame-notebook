@@ -344,7 +344,9 @@ cd yay
 makepkg -si
 ```
 
-### 镜像
+### Mirrors
+
+`reflector` 可以按照指定筛选条件将镜像列表生成到 `/etc/pacman.d/mirrorlist`
 
 安装 `reflector` 包
 
@@ -352,7 +354,19 @@ makepkg -si
 pacman -S reflector
 ```
 
-该命令会将最快的镜像列表生成到 `/etc/pacman.d/mirrorlist`
+常用例
+
+按下载速度排序指定国家的镜像列表
+
+```bash
+reflector --country COUNTRY --sort rate --save /etc/pacman.d/mirrorlist
+```
+
+按下载速度排序最近同步的 200 个 HTTP 或 HTTPS 镜像
+
+```bash
+reflector --latest 200 --protocol http,https --sort rate --save /etc/pacman.d/mirrorlist
+```
 
 ## 参考链接
 
@@ -361,3 +375,4 @@ pacman -S reflector
 - [GRUB](https://wiki.archlinux.org/index.php/GRUB)
 - [mirrors 生成器](https://www.archlinux.org/mirrorlist/)
 - [yay](https://github.com/Jguer/yay)
+- [reflector examples](https://man.archlinux.org/man/reflector.1#EXAMPLES)
