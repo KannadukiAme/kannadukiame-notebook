@@ -2,8 +2,8 @@
 layout: home
 
 hero:
-  name: 雨之书
-  text: 记录赛博空间的一些探索经历。
+  name: Geek Record
+  text: 关于赛博空间的一些探索纪录。
   tagline: 始于2019年 ...
   actions:
     - theme: brand

@@ -1,6 +1,6 @@
 export default {
-  title: '雨之书',
-  description: 'The book of KannadukiAme',
+  title: 'Geek Record',
+  description: '关于赛博空间的一些探索纪录。',
   lastUpdated: true,
   themeConfig: {
     lastUpdated: {
@@ -18,16 +18,16 @@ export default {
     ],
     outline: [2, 6],
     nav: [
-      { text: '首页', link: '/' },
+      { text: 'HOME', link: '/' },
       {
-        text: '笔记',
+        text: 'RECORD',
         link: '/notes/hypervisor/pve.md',
         activeMatch: '/notes/',
       },
     ],
     sidebar: [
       {
-        text: '虚拟化方案',
+        text: 'Hypervisor',
         items: [
           {
             text: 'Proxmox VE',
@@ -47,11 +47,15 @@ export default {
             text: 'Archlinux',
             link: '/notes/linux/arch.md',
           },
+          {
+            text: 'OpenWrt',
+            link: '/notes/linux/openwrt.md',
+          },
         ],
         collapsed: false,
       },
       {
-        text: 'Web应用',
+        text: 'Web Application',
         items: [
           {
             text: 'Nextcloud',
@@ -65,17 +69,7 @@ export default {
         collapsed: false,
       },
       {
-        text: '系统相关',
-        items: [
-          {
-            text: 'OpenWrt',
-            link: '/notes/linux/openwrt.md',
-          },
-        ],
-        collapsed: false,
-      },
-      {
-        text: '女仆',
+        text: 'Maid',
         items: [
           {
             text: 'SORA(Raspberry Pi 3 Model B)',
