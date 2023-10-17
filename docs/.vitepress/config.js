@@ -69,15 +69,24 @@ export default {
         collapsed: false,
       },
       {
+        text: 'Waifu',
+        items: [
+          {
+            text: 'MADOKA',
+            link: '/notes/waifu/madoka.md',
+          },
+        ],
+      },
+      {
         text: 'Maid',
         items: [
           {
             text: 'SORA(Raspberry Pi 3 Model B)',
-            link: '/notes/sora.md',
+            link: '/notes/maid/sora.md',
           },
           {
             text: 'MISAKI(Proxmox VE)',
-            link: '/notes/misaki.md',
+            link: '/notes/maid/misaki.md',
           },
         ],
         collapsed: false,
