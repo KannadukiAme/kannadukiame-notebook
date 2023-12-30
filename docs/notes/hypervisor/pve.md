@@ -1,16 +1,71 @@
 # Proxmox VE
 
-> 基于 Debian Linux 的虚拟机解决方案,提供 Web UI 或 CLI 管理方式
+基于 Debian Linux 的高性能虚拟机解决方案,提供 Web UI 或 CLI 管理方式
+
+::: warning
+以下所有安装与使用方法基于 **Proxmox VE 8.1.3** 版本上实践，不保证其他版本操作方法一致
+:::
 
 ## 安装
 
 使用官方提供的[镜像](https://www.proxmox.com/en/downloads)，linux 下直接使用 dd 命令烧录到 u 盘即可，windows 下推荐使用 rufus 工具。
 
-## 使用
+安装后，默认 web 页面管理地址为 `https://localhost:8006`
 
-默认 web 页面管理地址为 `https://localhost:8006`
+## 硬件直通
 
-### 创建 LXC 容器
+硬件直通需要开启 IOMMU
+
+::: info 前置条件
+Intel 的 CPU 需在主板 BIOS 开启 `VT-d`
+:::
+
+编辑 `/etc/default/grub`, 添加 `intel_iommu=on` 到 `GRUB_CMDLINE_LINUX_DEFAULT=”quiet”`
+
+```text
+GRUB_DEFAULT=0
+GRUB_TIMEOUT=5
+GRUB_DISTRIBUTOR=`lsb_release -i -s 2> /dev/null || echo Debian`
+GRUB_CMDLINE_LINUX_DEFAULT="quiet" // [!code --]
+GRUB_CMDLINE_LINUX_DEFAULT="quiet intel_iommu=on" // [!code ++]
+GRUB_CMDLINE_LINUX=""
+```
+
+保存并更新 grub
+
+```bash
+update-grub
+```
+
+重启即可生效
+
+### LXC 硬盘直通
+
+将宿主的 sda1 硬盘分区直通给 id 为 100 的 lxc 容器，挂载路径为 `/data`
+
+```bash
+pct set 100 -mp0 /dev/sda1,mp=/data
+```
+
+### 虚拟机硬盘直通
+
+查看需要直通硬盘的型号，也可以直接在 pve 的 web 管理界面上直接查找
+
+```bash
+ls /dev/disk/by-id/
+```
+
+将宿主的硬盘直通给 id 为 101 的虚拟机，使用 sata 接口
+
+```bash
+qm set 101 --sata0 /dev/disk/by-id/ata-WDC_WD20SPZX-08UA7_WD-WXL1EC8FYULY
+```
+
+## LXC 使用
+
+> LXC is a userspace interface for the Linux kernel containment features. Through a powerful API and simple tools, it lets Linux users easily create and manage system or application containers.
+
+### 创建 LXC
 
 ![](/img/hypervisor/pve-1.jpg)
 
@@ -36,28 +91,9 @@
 
 ![](/img/hypervisor/pve-9.jpg)
 
-### LXC 容器硬盘直通
-
-将宿主的 sda1 硬盘分区直通给 id 为 100 的 lxc 容器，挂载路径为 `/data`
-
-```bash
-pct set 100 -mp0 /dev/sda1,mp=/data
-```
-
-### 虚拟机硬盘直通
-
-查看需要直通硬盘的型号，也可以直接在 pve 的 web 管理界面上直接查找
-
-```bash
-ls /dev/disk/by-id/
-```
-
-将宿主的硬盘直通给 id 为 101 的虚拟机，使用 sata 接口
-
-```bash
-qm set 101 --sata0 /dev/disk/by-id/ata-WDC_WD20SPZX-08UA7_WD-WXL1EC8FYULY
-```
-
 ## 参考链接
 
+- [Proxmox VE 官网](https://www.proxmox.com/)
 - [Proxmox VE Administration Guide](https://pve.proxmox.com/pve-docs/pve-admin-guide.pdf)
+- [PVE PCI Passthrough](https://pve.proxmox.com/wiki/PCI_Passthrough)
+- [Linux Container](https://linuxcontainers.org/)
