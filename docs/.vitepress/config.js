@@ -44,7 +44,7 @@ export default {
         text: 'Linux',
         items: [
           {
-            text: 'Archlinux',
+            text: 'Arch Linux',
             link: '/notes/linux/arch.md',
           },
           {
@@ -81,11 +81,11 @@ export default {
         text: 'Maid',
         items: [
           {
-            text: 'SORA(Raspberry Pi 3 Model B)',
+            text: 'SORA(已退役)',
             link: '/notes/maid/sora.md',
           },
           {
-            text: 'MISAKI(Proxmox VE)',
+            text: 'MISAKI(现役)',
             link: '/notes/maid/misaki.md',
           },
         ],

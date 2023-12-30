@@ -1,27 +1,48 @@
-# MISAKI(Proxmox VE) 调教日记
+# MISAKI
 
-MISAKI 是主力家用女仆，专为家庭提供云盘存储、媒体等服务提供硬件支持。
+**MISAKI** 是现役家用女仆，采用 `Proxmox VE` 虚拟化方案，为主人提供魔法上网、云存储、云媒体等服务。
 
 ## 硬件配置
 
 - 4x Cores Intel Core i5-7300U
 - 8GB RAM
-- 128G SSD mSATA & 250GB SSD SATA
+- 128G SSD mSATA & 2T HDD
 - 6x Ethernet ports
 - 2x USB2 ports & 2x USB3 ports
 
-## 安装 Proxmox VE
+## 在物理机上安装 Proxmox VE
 
-Proxmox VE 是开源的虚拟化管理平台，基于 Debian 系统，非常适合 All In One 方案。  
-唯一遗憾的是免费版无法更新软件包，需要付费订阅。不过免费版也足够一般用户使用了。
+参考[这里->](/notes/hypervisor/pve.md)
 
-安装过程十分简单，在 Proxmox VE 官网上下载 iso 镜像，烧录到 U 盘上即可。
+## 在虚拟机上安装 OpenWrt
 
-开机启动时选择优先 U 盘启动，跟随安装指示就可以轻松完成。
+这里使用 [immortalwrt](https://github.com/immortalwrt/immortalwrt) 的 OpenWrt 分支，下载 [qcow2 镜像](https://downloads.immortalwrt.org/)
 
-安装过程中，需要设定 Web 管理端的 IP 地址，这里设置为 `192.168.2.3` 。
+1. **创建 OpenWrt 虚拟机**
 
-安装完毕后，进入 `https://192.168.2.3:8006` 就可以开始创建虚拟机了。
+CPU 分配 2 核心 HOST 类型，内存 1024MB 即可满足需求。这里需要网络取消勾选防火墙，移除自带硬盘。
+
+2. **配置 OpenWrt 虚拟机**
+
+添加 PCI 设备，将剩余 5 个以太网口全部直通给 OpenWrt 虚拟机
+
+使用 `scp` 命令上传 qcow2 镜像
+
+```bash
+scp immortalwrt-23.05.1-x86-generic-generic-ext4-combined-efi.qcow2 root@192.168.2.3:/var/lib/vz/template/immortalwrt-23.05.1-x86-generic-generic-ext4-combined-efi.qcow2
+```
+
+进入 `/var/lib/vz/template` 目录，执行导入操作
+
+```bash
+qm importdisk 102 immortalwrt-23.05.1-x86-generic-generic-ext4-combined-efi.qcow2 local-lvm
+```
+
+回到硬件界面，编辑未使用的磁盘，设备类型改为 SATA
+
+![图7](/img/misaki/7.jpg)
+
+在选项处修改引导顺序，将 SATA 硬盘设置为第一优先级。
 
 ## 在虚拟机上安装 Arch Linux
 
@@ -55,14 +76,16 @@ qm importdisk 100 archlinux.qcow2 local-lvm
 
 4. **将转好的虚拟硬盘挂载到虚拟机上**
 
-## 配置虚拟机
+### 配置 Arch Linux
 
-::: info
-安装好以后，记得修改 root 账号与默认用户的密码。  
+详细配置过程参考[这里->](/notes/linux/arch.md)
+
+::: warning
 root 账号密码为空，默认用户账号名与密码都是 arch。
+记得及时修改 root 账号与默认用户的密码。  
 :::
 
-### 设置静态 IP
+**设置静态 IP**
 
 修改 `/etc/systemd/network` 目录下的 `.network` 配置文件  
 这里设置虚拟机的静态 IP 为 `192.168.2.4`
@@ -81,38 +104,7 @@ Gateway=192.168.2.1
 networkctl reload
 ```
 
-### 安装 Docker
-
-```bash
-pacman -S docker docker-compose
-```
-
-开机自动加载 Docker 服务
-
-```bash
-systemctl enable docker
-systemctl start docker
-```
-
-### 直通硬盘
-
-查看需要直通硬盘的型号，也可以直接在 pve 的 web 管理界面上直接查找
-
-```bash
-ls /dev/disk/by-id/
-```
-
-![图5](/img/misaki/5.jpg)
-
-然后执行以下命令
-
-```bash
-qm set 100 --sata0 /dev/disk/by-id/ata-Samsung_SSD_750_EVO_250GB_S32LNWAH636762K
-```
-
-100 为虚拟机 id，--sata0 指定硬盘类型和序号，/dev/disk/by-id/xxx 指定该硬盘
-
-## 在虚拟机上部署 Docker 容器
+### 部署 Docker 容器
 
 根据实际需要，目前可部署以下服务的 Docker 容器
 
@@ -120,22 +112,7 @@ qm set 100 --sata0 /dev/disk/by-id/ata-Samsung_SSD_750_EVO_250GB_S32LNWAH636762K
 - Nextcloud **私人云盘**
 - Jellyfin **媒体播放**
 
-::: tip 读写 NTFS 分区
-如果挂载的硬盘分区是 NTFS 类型，需要额外装 `ntfs-3g`
-
-```bash
-pacman -S ntfs-3g
-```
-
-挂载到 `/mnt/sda2` 目录下
-
-```bash
-mount /dev/sda2 /mnt/sda2
-```
-
-:::
-
-### 部署 Portainer 服务
+#### 部署 Portainer 服务
 
 这里使用社区版 `portainer-ce`
 
@@ -159,7 +136,7 @@ services:
 
 进入 `https://192.168.2.4:9443` 即可开始创建管理账号使用。
 
-### 部署 Nextcloud 服务
+#### 部署 Nextcloud 服务
 
 直接使用 Dockerhub 上 Nextcloud 提供的 docker-compose 配置模板。为了方便备份和测试，没有使用 volume 管理。
 
@@ -215,7 +192,7 @@ services:
 
 ![图2](/img/misaki/2.jpg)
 
-### 部署 Jellyfin 服务
+#### 部署 Jellyfin 服务
 
 直接使用官方提供的 `docker-compose` 配置模板
 
@@ -241,7 +218,6 @@ services:
 
 ## 参考链接
 
-- [Proxmox VE 官网](https://www.proxmox.com/)
 - [Portainer 官网](https://www.portainer.io/)
 - [Nextcloud 官网](https://nextcloud.com)
 - [Jellyfin 官网](https://jellyfin.org/)
