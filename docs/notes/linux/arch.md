@@ -225,6 +225,9 @@ pacman-key --init
 # 获取密钥
 pacman-key --populate
 
+# 更新密钥
+pacman -Sy archlinux-keyring
+
 # 更新系统
 pacman -Syu
 ```
