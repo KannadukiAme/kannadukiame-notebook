@@ -1,6 +1,6 @@
 # Proxmox VE
 
-基于 Debian Linux 的高性能虚拟机解决方案,提供 Web UI 或 CLI 管理方式
+基于 Debian Linux 的高性能虚拟机解决方案，提供 Web UI 或 CLI 管理方式
 
 ::: warning
 以下所有安装与使用方法基于 **Proxmox VE 8.1.3** 版本上实践，不保证其他版本操作方法一致
@@ -20,7 +20,9 @@
 Intel 的 CPU 需在主板 BIOS 开启 `VT-d`
 :::
 
-编辑 `/etc/default/grub`, 添加 `intel_iommu=on` 到 `GRUB_CMDLINE_LINUX_DEFAULT=”quiet”`
+编辑 `/etc/default/grub`
+
+添加 `intel_iommu=on` 到 `GRUB_CMDLINE_LINUX_DEFAULT=”quiet”`
 
 ```text
 GRUB_DEFAULT=0
@@ -38,6 +40,39 @@ update-grub
 ```
 
 重启即可生效
+
+### 在 PVE 上挂载 ntfs 分区
+
+::: tip
+linux 内核版本 >= 5.15 均支持 `ntfs3`
+:::
+
+使用 `ntfs3` 挂载 ntfs 分区
+
+```bash
+mount -t ntfs3 /dev/sda2 /mnt/download
+```
+
+若挂载失败出现如下问题时，可尝试使用 `ntfsfix` 修复
+
+```
+mount: /mnt: wrong fs type, bad option, bad superblock on /dev/sda2, missing codepage or helper program, or other error.
+       dmesg(1) may have more information after failed mount system call.
+```
+
+```
+sda2: volume is dirty and "force" flag is not set!
+```
+
+修复标记为 dirty 的 ntfs 分区
+
+```bash
+ntfsfix --clear-dirty /dev/sda2
+```
+
+::: info PS
+使用 `ntfsfix` 需安装 `ntfs-3g` 包
+:::
 
 ### LXC 硬盘直通
 
