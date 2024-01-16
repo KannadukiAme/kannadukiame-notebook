@@ -69,6 +69,10 @@ export default {
             text: 'Dockge',
             link: '/notes/web-app/dockge.md',
           },
+          {
+            text: 'Uptime Kuma',
+            link: '/notes/web-app/uptime-kuma.md',
+          },
         ],
         collapsed: false,
       },
