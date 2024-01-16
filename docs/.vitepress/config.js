@@ -65,6 +65,10 @@ export default {
             text: 'Portainer',
             link: '/notes/web-app/portainer.md',
           },
+          {
+            text: 'Dockge',
+            link: '/notes/web-app/dockge.md',
+          },
         ],
         collapsed: false,
       },
