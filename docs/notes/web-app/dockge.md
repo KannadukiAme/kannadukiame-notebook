@@ -31,3 +31,7 @@ services:
       # Tell Dockge where is your stacks directory
       - DOCKGE_STACKS_DIR=/opt/stacks
 ```
+
+## 参考链接
+
+- [louislam/dockge](https://github.com/louislam/dockge)
