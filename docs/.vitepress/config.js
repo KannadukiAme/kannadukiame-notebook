@@ -58,6 +58,10 @@ export default {
         text: 'Web Application',
         items: [
           {
+            text: 'Dashy',
+            link: '/notes/web-app/dashy.md',
+          },
+          {
             text: 'Nextcloud',
             link: '/notes/web-app/nextcloud.md',
           },
