@@ -77,6 +77,10 @@ export default {
             text: 'Uptime Kuma',
             link: '/notes/web-app/uptime-kuma.md',
           },
+          {
+            text: 'Jellyfin',
+            link: '/notes/web-app/jellyfin.md',
+          },
         ],
         collapsed: false,
       },
