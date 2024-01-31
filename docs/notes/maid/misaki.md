@@ -44,6 +44,22 @@ qm importdisk 102 immortalwrt-23.05.1-x86-generic-generic-ext4-combined-efi.qcow
 
 在选项处修改引导顺序，将 SATA 硬盘设置为第一优先级。
 
+### 必要插件预设
+
+插件预设
+
+- ttyd 页面终端
+- clash 魔法上网工具
+- argon 主题
+- argon-config 主题定制
+
+相关 luci 插件包名称， 包管理页面会自动安装相关依赖
+
+- luci-app-ttyd
+- luci-app-openclash
+- luci-theme-argon
+- luci-app-argon-config
+
 ## 在虚拟机上安装 Arch Linux
 
 这里选择使用 qcow2 镜像，比起 iso 镜像安装方式不知快了多少倍。好在 Archlinux 官网提供了 qcow2 镜像下载，可以节省不少时间。
@@ -106,118 +122,9 @@ networkctl reload
 
 ### 部署 Docker 容器
 
-根据实际需要，目前可部署以下服务的 Docker 容器
+根据实际需要，已部署的应用如下
 
-- Portainer **Docker 容器在线管理**
-- Nextcloud **私人云盘**
-- Jellyfin **媒体播放**
-
-#### 部署 Portainer 服务
-
-这里使用社区版 `portainer-ce`
-
-docker-compose 配置模板如下
-
-```yml
-version: '3'
-services:
-  app:
-    image: portainer/portainer-ce:latest
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./data:/data
-    ports:
-      - 8000:8000
-      # - 9000:9000 for use http
-      - 9443:9443
-```
-
-容器内 `/data` 目录是 Portainer 服务存放数据库所在目录，`9000` 端口为 http 使用，`9443` 端口为 https 使用。
-
-进入 `https://192.168.2.4:9443` 即可开始创建管理账号使用。
-
-#### 部署 Nextcloud 服务
-
-直接使用 Dockerhub 上 Nextcloud 提供的 docker-compose 配置模板。为了方便备份和测试，没有使用 volume 管理。
-
-::: info PS
-不要使用官网的提供的那个 AIO Docker 镜像，默认是需要域名验证的，后续配置十分麻烦，架设在内网上的不需要那么多额外配置。  
-当然如果是架设在公网上，并且有现成的域名，可以直接使用官方的 AIO Docker 镜像。
-:::
-
-```yml
-version: '2'
-
-services:
-  db:
-    image: mariadb:10.5
-    restart: always
-    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
-    volumes:
-      - ./db:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=
-      - MYSQL_PASSWORD=
-      - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=nextcloud
-
-  app:
-    image: nextcloud
-    restart: always
-    ports:
-      - 8080:80
-    links:
-      - db
-    volumes:
-      - ./html:/var/www/html
-      - /mnt/sda2:/downloads
-    environment:
-      - MYSQL_PASSWORD=
-      - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=nextcloud
-      - MYSQL_HOST=db
-```
-
-注意 app 的 `MYSQL_PASSWORD` 密码要与 db 的一致。
-
-部署完毕后，进入 `http://192.168.2.4:8080` 继续完成剩下的安装。
-
----
-
-此外，为了挂载外部存储 `/downloads`，需要安装插件 `External storage support`
-
-![图1](/img/misaki/1.jpg)
-
-找到 `External storage support` 插件，安装之后，在个人设置界面会多出一个外部存储的菜单。
-
-![图2](/img/misaki/2.jpg)
-
-#### 部署 Jellyfin 服务
-
-直接使用官方提供的 `docker-compose` 配置模板
-
-```yml
-version: '3.5'
-services:
-  jellyfin:
-    image: jellyfin/jellyfin
-    container_name: jellyfin
-    network_mode: 'host'
-    volumes:
-      - ./config:/config
-      - ./cache:/cache
-      - /mnt/sda2:/media
-    restart: 'unless-stopped'
-    extra_hosts:
-      - 'host.docker.internal:host-gateway'
-```
-
-`/mnt/sda2` 虚拟机挂载外部存储目录
-
-部署完毕后，进入 `http://192.168.2.4:8096` 开始配置
-
-## 参考链接
-
-- [Portainer 官网](https://www.portainer.io/)
-- [Nextcloud 官网](https://nextcloud.com)
-- [Jellyfin 官网](https://jellyfin.org/)
+- Dockge 可视化容器管理工具
+- Nextcloud 云盘
+- Uptime Kuma 服务监控
+- Dashy 可定制仪表盘
