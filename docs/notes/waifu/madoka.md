@@ -27,7 +27,7 @@ yay -S fcitx5-mozc-ut
 
 将以下环境变量添加到 `~/.bashrc` 或者 `~/.zshrc`
 
-```bashrc
+```
 export GTK_IM_MODULE=fcitx // [!code ++]
 export QT_IM_MODULE=fcitx // [!code ++]
 export XMODIFIERS=@im=fcitx // [!code ++]
