@@ -48,8 +48,19 @@ services:
 
 默认登陆地址为 `http://localhost:8080`
 
-::: tip Note
-每次修改访问网址时，需要修改 nextcloud 的配置文件，否则会出现无法登录的情况
+::: warning 注意事项
+每次修改访问地址时，需要匹配配置文件的信任域名，否则会出现无法登录的情况
+
+找到 `html/config/config.php` 配置文件，修改信任域名即可
+
+```php
+'trusted_domains' =>
+array (
+  0 => 'olddomain.local', // [!code --]
+  0 => 'newdomain.local', // [!code ++]
+)
+```
+
 :::
 
 ### 挂载外部存储
