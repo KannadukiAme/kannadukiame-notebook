@@ -62,6 +62,10 @@ export default {
             link: '/notes/web-app/dashy.md',
           },
           {
+            text: 'Traefik',
+            link: '/notes/web-app/traefik.md',
+          },
+          {
             text: 'Nextcloud',
             link: '/notes/web-app/nextcloud.md',
           },
