@@ -70,6 +70,10 @@ export default {
             link: '/notes/web-app/traefik.md',
           },
           {
+            text: 'AList',
+            link: '/notes/web-app/alist.md',
+          },
+          {
             text: 'Nextcloud',
             link: '/notes/web-app/nextcloud.md',
           },
