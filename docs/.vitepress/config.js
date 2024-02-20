@@ -58,6 +58,10 @@ export default {
         text: 'Web Application',
         items: [
           {
+            text: 'Homepage',
+            link: '/notes/web-app/homepage.md',
+          },
+          {
             text: 'Dashy',
             link: '/notes/web-app/dashy.md',
           },
