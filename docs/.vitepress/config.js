@@ -66,6 +66,10 @@ export default {
             link: '/notes/web-app/dashy.md',
           },
           {
+            text: 'qBittorrent',
+            link: '/notes/web-app/qbittorrent.md',
+          },
+          {
             text: 'Traefik',
             link: '/notes/web-app/traefik.md',
           },
