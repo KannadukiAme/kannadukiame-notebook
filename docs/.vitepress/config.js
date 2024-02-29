@@ -55,6 +55,16 @@ export default {
         collapsed: false,
       },
       {
+        text: 'Network Proxy',
+        items: [
+          {
+            text: 'sing-box',
+            link: '/notes/network-proxy/sing-box.md',
+          },
+        ],
+        collapsed: false,
+      },
+      {
         text: 'Web Application',
         items: [
           {
