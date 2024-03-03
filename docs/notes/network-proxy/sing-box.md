@@ -123,6 +123,70 @@ config sing-box 'main'
 
 对于 sing-box 的订阅请使用在线订阅转换 https://github.com/Toperlock/sing-box-subscribe
 
+## 各协议配置 Example
+
+`Vless` + `ws`
+
+```json
+{
+  "tag": "proxy A",
+  "type": "vless",
+  "server": "IP/HOSTED CDN FROM CLOUDFLARE",
+  "server_port": 80,
+  "uuid": "UUID",
+  "flow": "",
+  "multiplex": {
+    "enabled": false,
+    "protocol": "smux",
+    "max_streams": 32
+  },
+  "packet_encoding": "xudp",
+  "transport": {
+    "type": "ws",
+    "path": "/buy-vless-ws-pm-telegram-at-synricha",
+    "headers": {
+      "Host": "YOURDOMAINSERVER"
+    }
+  }
+}
+```
+
+`Vless` + `ws` + `tls`
+
+```json
+{
+  "tag": "proxy A",
+  "type": "vless",
+  "server": "IP/HOSTED CDN FROM CLOUDFLARE",
+  "server_port": 443,
+  "uuid": "UUID",
+  "flow": "",
+  "tls": {
+    "enabled": true,
+    "server_name": "YOURDOMAINSERVER",
+    "insecure": true,
+    "utls": {
+      "enabled": true,
+      "fingerprint": "chrome"
+    }
+  },
+  "multiplex": {
+    "enabled": false,
+    "protocol": "smux",
+    "max_streams": 32
+  },
+  "packet_encoding": "xudp",
+  "transport": {
+    "type": "ws",
+    "path": "/buy-vless-ws-pm-telegram-at-synricha",
+    "headers": {
+      "Host": "YOURDOMAINSERVER"
+    }
+  }
+}
+```
+
 ## 参考链接
 
 - [SagerNet/sing-box](https://github.com/SagerNet/sing-box)
+- [sing-box-example](https://github.com/malikshi/sing-box-examples)
