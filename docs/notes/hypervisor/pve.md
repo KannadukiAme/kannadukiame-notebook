@@ -126,6 +126,21 @@ qm set 101 --sata0 /dev/disk/by-id/ata-WDC_WD20SPZX-08UA7_WD-WXL1EC8FYULY
 
 ![](/img/hypervisor/pve-9.jpg)
 
+## 自动挂载硬盘
+
+使用 `blkid` 命令查看硬盘 `uuid`
+
+```bash
+blkid
+```
+
+配置 `/etc/fstab`
+
+```
+# <file system> <mount point> <type> <options> <dump> <pass>
+UUID=xxx /xxx ext4 rw,noatime,nofail,x-systemd.device-timeout=3,errors=remount-ro 0 2 // [!code ++]
+```
+
 ## 参考链接
 
 - [Proxmox VE 官网](https://www.proxmox.com/)
