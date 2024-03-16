@@ -123,6 +123,10 @@ export default {
         text: 'Maid',
         items: [
           {
+            text: 'R2S(现役)',
+            link: '/notes/maid/r2s.md',
+          },
+          {
             text: 'SORA(已退役)',
             link: '/notes/maid/sora.md',
           },
