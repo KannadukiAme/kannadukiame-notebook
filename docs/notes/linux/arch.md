@@ -1,13 +1,13 @@
 # Arch Linux
 
-基于 Linux 系统的轻量级发行版，拥有强大的社区支持。
+基于 Linux 系统的轻量级(~~折腾级~~)发行版，拥有强大的社区支持。
 
 ## 安装
 
-archlinux 的安装过程极为繁琐，基本上每一步都需要自己来操作。初次安装，想要成功需得折腾个把小时，甚至几天才能搞定。不过可以学习到很多关于 Linux 系统的细节。
+archlinux 的安装过程极为繁琐，基本上每一步都需要自己来操作。初次安装，想要成功需得折腾个把小时，甚至几天才能搞定。不过好在 wiki 写得十分详细，出问题总能找到解决办法。
 
 ::: tip 快速安装
-如果想要跳过繁琐的安装过程，可以使用镜像提供的快速安装工具 `archinstall`
+如果想要跳过繁琐的安装过程，可以使用官方提供的快速安装工具 `archinstall`
 :::
 
 ### 下载镜像与烧录
@@ -26,15 +26,34 @@ lsblk
 
 ### 检查启动模式
 
+::: tip Tips
+如果是从虚拟机安装系统，建议开启 UEFI 模式，有些虚拟机软件可能需要手动设置
+:::
+
 输入以下命令，如果没有错误信息，就是 UEFI 模式，否则，就是 BIOS(或 CSM)模式。
 
 ```bash
 ls /sys/firmware/efi/efivars
 ```
 
-::: tip Note
-如果是从虚拟机安装系统，建议开启 UEFI 模式，有些虚拟机软件可能需要手动设置
+### 联网
+
+::: tip Skip
+如果电脑已通过有线网卡连接互联网，可以跳过该步骤
 :::
+
+使用 `iwctl` 连接 wifi
+
+```bash
+# 进入交互模式
+iwctl
+
+# 显示网卡名称
+device list
+
+# 连接 wifi (name为网卡名称)
+station name connect SSID
+```
 
 ### 检查系统时钟
 
@@ -83,25 +102,32 @@ mkfs.fat -F32 /dev/sdx1
 
 # 挂载
 mount /dev/sdx3 /mnt
-mkidr /mnt/efi
-mount /dev/sdx1 /mnt/efi
+mount /dev/sdx1 /mnt/boot
 
 # 制作swap分区
 mkswap /dev/sdX2
 swapon /dev/sdX2
 ```
 
-### 设置源
-
-目前(2021-5-31)不需要手动设置，联网后，reflector 会自动设置最快的 20 个镜像列表
-
 ### 安装基础包
+
+安装前，需要初始化密钥
+
+```bash
+# 初始化密钥
+pacman-key --init
+# 获取密钥
+pacman-key --populate
+
+# 更新密钥
+pacman -Sy archlinux-keyring
+```
 
 ```bash
 pacstrap /mnt base linux linux-firmware
 ```
 
-::: tip Note
+::: tip Skip
 从虚拟机或容器中安装，可跳过 firmware 的安装
 :::
 
@@ -138,19 +164,28 @@ LANG=en_US.UTF-8
 
 ### 网络配置
 
-编辑以下文件
+设置 hostname
 
 ```bash
-# /etc/hostname
-myhostname
+hostnamectl hostname yourhostname
+```
 
-# /etc/hosts
+编辑 `/etc/hosts`
+
+```
 127.0.0.1	localhost
 ::1		localhost
 127.0.1.1	myhostname.localdomain	myhostname
 ```
 
-默认内置 `networkctl`
+启用 `systemd-networkd`
+
+```bash
+systemctl enable systemd-networkd
+systemctl start systemd-networkd
+```
+
+编辑 `/etc/systemd/network/20-wired.network` 配置文件，文件名称可改为任意名称
 
 DHCP 配置模板
 
@@ -171,29 +206,23 @@ Address=192.168.0.15/24
 Gateway=192.168.0.1
 ```
 
-安装 dhcpcd
-
-```
-pacman -S dhcpcd
-```
-
-配置 dhcp
+启用 `systemd-resolved`
 
 ```bash
-# 启用dhcpcd服务
-systemctl enable dhcpcd
-dhcpcd
+systemctl enable systemd-resolved
+systemctl start systemd-resolved
 ```
 
-如需要可配置静态 IP
+编辑以下文件
 
-```
-# /etc/dhcpcd.conf
+```bash
+# /etc/hostname
+myhostname
 
-interface eth0
-static ip_address=192.168.0.10/24
-static routers=192.168.0.1
-static domain_name_servers=192.168.0.1 8.8.8.8
+# /etc/hosts
+127.0.0.1	localhost
+::1		localhost
+127.0.1.1	myhostname.localdomain	myhostname
 ```
 
 ### 安装 grub 启动器
@@ -205,7 +234,7 @@ UEFI
 pacman -S grub efibootmgr
 
 # 指定efi安装路径
-grub-install --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 
 # 生成grub配置文件
 grub-mkconfig -o /boot/grub/grub.cfg
@@ -215,21 +244,6 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 ```bash
 pacman -S base-devel linux-headers linux-lts
-```
-
-### 更新系统
-
-```bash
-# 初始化密钥
-pacman-key --init
-# 获取密钥
-pacman-key --populate
-
-# 更新密钥
-pacman -Sy archlinux-keyring
-
-# 更新系统
-pacman -Syu
 ```
 
 ### 设置 root 密码
@@ -347,6 +361,15 @@ cd yay
 makepkg -si
 ```
 
+或者使用 `paru` 来替代 `yay`
+
+```bash
+sudo pacman -S --needed base-devel
+git clone https://aur.archlinux.org/paru.git
+cd paru
+makepkg -si
+```
+
 ### Mirrors
 
 `reflector` 可以按照指定筛选条件将镜像列表生成到 `/etc/pacman.d/mirrorlist`
@@ -378,4 +401,5 @@ reflector --latest 200 --protocol http,https --sort rate --save /etc/pacman.d/mi
 - [GRUB](https://wiki.archlinux.org/index.php/GRUB)
 - [mirrors 生成器](https://www.archlinux.org/mirrorlist/)
 - [yay](https://github.com/Jguer/yay)
+- [paru](https://github.com/Morganamilo/paru)
 - [reflector examples](https://man.archlinux.org/man/reflector.1#EXAMPLES)
