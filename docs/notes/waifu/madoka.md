@@ -6,32 +6,44 @@ MADOKA 是基于 Archlinux 的开发主力机，主要提供 Web 开发环境。
 
 在进行桌面配置之前，先来完成必需的环境配置。
 
-### IM 输入法
+### Fonts 字体
 
-使用输入法框架整合包 `fcitx5-im` 及其配置工具 `fcitx5-configtool` 推荐为 qt 以及 gtk 程序加上 `fcitx5-qt` `fcitx5-gtk`
+`noto-fonts-cjk` 支持简体中文、繁体中文、日文、韩文等语言
+
+`ttf-cascadia-code` 漂亮的编程字体
+
+`nerd-fonts` icon 字体集合
+
+```bash
+sudo pacman -S noto-fonts-cjk ttf-cascadia-code nerd-fonts
+```
+
+### Input Method 输入法
+
+使用输入法框架整合包 `fcitx5-im`
 
 除此以外，中文输入法需要 `fcitx5-chinese-addons`
 
-日文输入法需要
-`fcitx5-mozc-ut`
+日文输入法需要 `fcitx5-mozc-ut`
 
 ```bash
-pacman -S fcitx5-im fcitx5-configtool fcitx5-qt fcitx5-gtk fcitx5-chinese-addons
+sudo pacman -S fcitx5-im fcitx5-chinese-addons
 ```
 
 ```bash
-yay -S fcitx5-mozc-ut
+paru -S fcitx5-mozc-ut
 ```
 
-添加环境变量
+::: tip Kitty
+开启 IME 支持
 
-将以下环境变量添加到 `~/.bashrc` 或者 `~/.zshrc`
+编辑 `~/.zshrc` 添加环境变量
 
 ```
-export GTK_IM_MODULE=fcitx // [!code ++]
-export QT_IM_MODULE=fcitx // [!code ++]
-export XMODIFIERS=@im=fcitx // [!code ++]
+GLFW_IM_MODULE=ibus // [!code ++]
 ```
+
+:::
 
 ### zsh
 
@@ -40,7 +52,7 @@ export XMODIFIERS=@im=fcitx // [!code ++]
 安装 `zsh`
 
 ```bash
-pacman -S zsh
+sudo pacman -S zsh
 ```
 
 使用官方脚本安装 `oh-my-zsh`
@@ -49,18 +61,75 @@ pacman -S zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
+### Audio 声音
+
+`pulseaudio` 一个跨平台的声音服务
+
+`pavucontrol` 是 `pulseaudio` 的图形化客户端界面
+
+```bash
+sudo pacman -S pulseaudio pavucontrol
+```
+
+### Music 音乐
+
+`mpd` 一个后台音乐播放服务
+
+`ncmpcpp` 强大的 `mpd` 前台播放器
+
+```bash
+sudo pacman -S mpd ncmpcpp
+```
+
+编辑 `~/.config/mpd/mpd.conf`
+
+```
+# Recommended location for database
+db_file            "~/.config/mpd/database"
+
+# If running mpd using systemd, delete this line to log directly to systemd.
+#log_file           "syslog"
+
+# The music directory is by default the XDG directory, uncomment to amend and choose a different directory
+music_directory    "~/aniuta"
+
+# Uncomment to refresh the database whenever files in the music_directory are changed
+auto_update "yes"
+
+# Uncomment to enable the functionalities
+playlist_directory "~/.config/mpd/playlists"
+pid_file           "~/.config/mpd/pid"
+state_file         "~/.local/state/mpd/state"
+sticker_file       "~/.config/mpd/sticker.sql"
+bind_to_address    "127.0.0.1"
+port               "6600"
+
+audio_output {
+        type            "pipewire"
+        name            "PipeWire Sound Server"
+}
+
+filesystem_charset   "UTF-8"
+```
+
 ### Development 开发环境
 
 使用 `nodejs` 语言及包管理工具 `pnpm`
 
 ```bash
-pacman -S nodejs pnpm
+sudo pacman -S nodejs pnpm
 ```
 
 **无敌的代码编辑器** `vscode`
 
+::: info 说明
+其实官方 package 里有 vscode，但是这个版本并不带 github 账户同步功能
+
+所以只能使用 AUR 里的 vscode，这个版本是二进制发布的不需要编译
+:::
+
 ```bash
-yay -S visual-studio-code-bin
+paru -S visual-studio-code-bin
 ```
 
 ## Desktop 桌面环境
@@ -69,7 +138,7 @@ yay -S visual-studio-code-bin
 
 ### Waybar
 
-默认模板
+::: details 默认模板
 
 ```jsonc
 // -*- mode: jsonc -*-
@@ -274,6 +343,8 @@ yay -S visual-studio-code-bin
 }
 ```
 
+:::
+
 `~/.config/waybar/config`
 
 ```
@@ -289,7 +360,43 @@ waybar & disown
 
 ### Kitty
 
+编辑 `~/.config/kitty/kitty.conf`
+
+```
+font_family Cascadia Code
+bold_font auto
+italic_font auto
+bold_italic_font auto
+term xterm-256color
+```
+
+::: warning 注意
+Kitty 在重新渲染 vim 时会出现问题
+
+添加下列配置即可解决渲染问题
+
+```
+term xterm-256color
+```
+
+:::
+
 ### Hyprpaper
+
+壁纸
+
+```bash
+sudo pacman -S hyprpaper
+```
+
+编辑 `~/.config/hypr/hyprpaper.conf`
+
+```
+preload = ~/wallpaper/4.jpg
+wallpaper = HDMI-A-1,~/wallpaper/4.jpg
+wallpaper = eDP-1,~/wallpaper/4.jpg
+splash = false
+```
 
 ## 参考链接
 
