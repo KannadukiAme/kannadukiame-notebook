@@ -149,12 +149,20 @@ filesystem_charset   "UTF-8"
 sudo pacman -S lf
 ```
 
-编辑 `~/.config/lf/lfrc` 以开启图标颜色、图片预览等功能
+`ctpv` 文件预览整合工具
+
+```bash
+paru -S ctpv-git
+```
+
+编辑 `~/.config/lf/lfrc` 以开启图标颜色、文件预览等功能
 
 ```
 set icons
-set previewer ~/.config/lf/lf_kitty_preview
-set cleaner ~/.config/lf/lf_kitty_clean
+set previewer ctpv
+set cleaner ctpvclear
+&ctpv -s $id
+&ctpvquit $id
 ```
 
 `~/.config/lf/icon`
@@ -524,41 +532,6 @@ Vagrantfile             
 
 # other formats
 *.pdf   
-```
-
-:::
-
-`~/.config/lf/lf_kitty_preview`
-
-::: details preview
-
-```bash
-#!/usr/bin/env bash
-file=$1
-w=$2
-h=$3
-x=$4
-y=$5
-
-if [[ "$( file -Lb --mime-type "$file")" =~ ^image ]]; then
-    kitty +kitten icat --silent --stdin no --transfer-mode file --place "${w}x${h}@${x}x${y}" "$file" < /dev/null > /dev/tty
-    exit 1
-fi
-
-pistol "$file"
-
-```
-
-:::
-
-`~/.config/lf/lf_kitty_clean`
-
-::: details clean
-
-```bash
-#!/usr/bin/env bash
-
-kitty +kitten icat --clear --stdin no --silent --transfer-mode file < /dev/null > /dev/tty
 ```
 
 :::
