@@ -88,6 +88,22 @@ sudo pacman -S zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
+### backlight 背光
+
+`brightnessctl`
+
+```bash
+sudo pacman -S brightnessctl
+```
+
+使用案例
+
+```bash
+brightnessctl s +5% # 调亮5%
+brightnessctl s 5%- # 调暗5%
+brightnessctl s 50% # 调整亮度为50%
+```
+
 ### Audio 声音
 
 `pulseaudio` 一个跨平台的声音服务
@@ -775,13 +791,21 @@ bindm = $mainMod, mouse:273, resizewindow
   "modules-left": ["custom/launcher", "cpu", "memory", "disk", "tray"],
   "modules-center": ["hyprland/workspaces"],
   "modules-right": [
-    "custom/wallpaper",
+    "custom/test",
+    "backlight",
     "mpd",
     "network",
     "pulseaudio",
     "battery",
     "clock"
   ],
+  "backlight": {
+    "device": "intel_backlight",
+    "format": " {}%",
+    "on-click": "brightnessctl s +5%",
+    "on-click-middle": "brightnessctl s 50%",
+    "on-click-right": "brightnessctl s 5%-"
+  },
   "pulseaudio": {
     "format": "{icon} {volume}%",
     "format-bluetooth": "{icon} {volume}%",
@@ -842,13 +866,6 @@ bindm = $mainMod, mouse:273, resizewindow
     "format-wifi": "  {essid} ({signalStrength}%)",
     "format-ethernet": ""
   },
-  "backlight": {
-    "tooltip": false,
-    "format": " {}%",
-    "interval": 1,
-    "on-scroll-up": "light -A 5",
-    "on-scroll-down": "light -U 5"
-  },
   "battery": {
     "states": {
       "good": 95,
@@ -868,7 +885,7 @@ bindm = $mainMod, mouse:273, resizewindow
   "clock": {
     "interval": 60,
     "tooltip": true,
-    "format": "{:%H:%M}",
+    "format": " {:%H:%M}",
     "tooltip-format": "{:%Y-%m-%d}"
   },
   "cpu": {
