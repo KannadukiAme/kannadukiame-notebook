@@ -566,6 +566,21 @@ Vagrantfile             
 paru -S visual-studio-code-bin
 ```
 
+### Wallpaper 壁纸
+
+`swww` wayland 壁纸软件
+
+```bash
+paru -S swww
+```
+
+使用方法
+
+```bash
+swww-daemon # 初始化
+swww img ~/wallpaper/1.jpg # 加载壁纸
+```
+
 ### Hyprland
 
 不完善配置，仅供过渡使用
@@ -780,11 +795,13 @@ bindm = $mainMod, mouse:273, resizewindow
 
 自制简易主题，仅供过渡使用
 
-`~/.config/waybar/config`
+`~/.config/waybar/config` 配置文件
 
-::: details 配置文件
+`~/.config/waybar/style.css` 样式表
 
-```jsonc
+::: code-group
+
+```jsonc [配置文件]
 {
   "layer": "top",
   "reload_style_on_change": true,
@@ -923,13 +940,7 @@ bindm = $mainMod, mouse:273, resizewindow
 }
 ```
 
-:::
-
-`~/.config/waybar/style.css`
-
-::: details 样式表
-
-```css
+```css [样式表]
 * {
   border: none;
   border-radius: 0;
