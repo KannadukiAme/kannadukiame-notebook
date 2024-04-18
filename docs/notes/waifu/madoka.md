@@ -43,7 +43,7 @@ GLFW_IM_MODULE=ibus // [!code ++]
 
 :::
 
-### terminal 终端
+### Terminal 终端
 
 `kitty` 支持跨平台的多功能终端
 
@@ -72,7 +72,7 @@ term xterm-256color
 
 :::
 
-### zsh
+### ZSH
 
 使用 `oh-my-zsh` 开箱即用的 `zsh` 配置
 
@@ -88,7 +88,7 @@ sudo pacman -S zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
-### backlight 背光
+### Backlight 背光
 
 `brightnessctl`
 
@@ -102,6 +102,27 @@ sudo pacman -S brightnessctl
 brightnessctl s +5% # 调亮5%
 brightnessctl s 5%- # 调暗5%
 brightnessctl s 50% # 调整亮度为50%
+```
+
+### Bluetooth 蓝牙
+
+安装必要的蓝牙组件
+
+```bash
+sudo pacman -S bluez bluez-utils
+```
+
+开启蓝牙服务
+
+```bash
+sudo systemctl enable bluetooth
+sudo systemctl start bluetooth
+```
+
+蓝牙图形管理界面
+
+```bash
+sudo pacman -S blueman
 ```
 
 ### Audio 声音
