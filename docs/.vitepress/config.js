@@ -3,6 +3,9 @@ export default {
   description: '关于赛博空间的一些探索纪录。',
   lastUpdated: true,
   themeConfig: {
+    search: {
+      provider: 'local',
+    },
     lastUpdated: {
       text: '最近更新',
       formatOptions: {
