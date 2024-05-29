@@ -12,6 +12,46 @@
 
 安装后，默认 web 页面管理地址为 `https://localhost:8006`
 
+## 订阅与系统更新
+
+添加 `No-Subscription Repository` 订阅源
+
+编辑 `/etc/apt/sources.list`
+
+```text
+deb http://ftp.debian.org/debian bookworm main contrib
+deb http://ftp.debian.org/debian bookworm-updates main contrib
+
+# Proxmox VE pve-no-subscription repository provided by proxmox.com, // [!code ++]
+# NOT recommended for production use // [!code ++]
+deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription // [!code ++]
+
+# security updates
+deb http://security.debian.org/debian-security bookworm-security main contrib
+```
+
+取消 `Enterprise Repository` 订阅源
+
+编辑 `/etc/apt/sources.list.d/pve-enterprise.list`
+
+```text
+deb https://enterprise.proxmox.com/debian/pve bookworm pve-enterprise // [!code --]
+# deb https://enterprise.proxmox.com/debian/pve bookworm pve-enterprise // [!code ++]
+```
+
+更新系统
+
+```bash
+apt-get update
+apt-get dist-upgrade
+```
+
+查看是否更新成功
+
+```bash
+pveversion -v
+```
+
 ## 硬件直通
 
 硬件直通需要开启 IOMMU
