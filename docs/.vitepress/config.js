@@ -47,6 +47,10 @@ export default {
         text: 'Linux',
         items: [
           {
+            text: 'Command Cheat Sheat',
+            link: '/notes/linux/command.md',
+          },
+          {
             text: 'Arch Linux',
             link: '/notes/linux/arch.md',
           },
