@@ -114,6 +114,10 @@ export default {
             text: 'Jellyfin',
             link: '/notes/web-app/jellyfin.md',
           },
+          {
+            text: 'FreshRSS',
+            link: '/notes/web-app/freshrss.md',
+          },
         ],
         collapsed: false,
       },
