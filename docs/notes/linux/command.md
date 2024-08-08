@@ -21,3 +21,11 @@ tar -cvzf xxx.tar.gz xxx.file
 ```bash
 tar -tvzf xxx.tar.gz
 ```
+
+## gzip
+
+解压 gz 文件
+
+```bash
+gzip -d xxx.gz
+```
