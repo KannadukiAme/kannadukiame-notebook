@@ -104,9 +104,17 @@ VirtualBox 需要 img 镜像 512 字节对齐,需要先将 img 镜像进行字�
 
 OpenWrt 的 lan 口默认地址为 192.168.1.1，需要根据实际情况修改该默认 IP
 
-```bash
-# 编辑lan口地址
-vi /etc/config/network
+编辑 `/etc/config/network`
+
+修改高亮处的 IP 地址即可
+
+```text
+config interface 'lan'
+        option device 'br-lan'
+        option proto 'static'
+        option ipaddr '192.168.1.1'  // [!code highlight]
+        option netmask '255.255.255.0'
+        option ip6assign '60'
 ```
 
 也可以通过 web 后台管理界面直接修改 lan 口 IP
