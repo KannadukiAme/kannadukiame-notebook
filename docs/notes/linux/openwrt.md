@@ -4,11 +4,13 @@
 
 ## 前言
 
-OpenWrt 是开源的基于 Linux 的路由器系统，除官方版本，还有其他社区或个人的定制版。如 koolshare 的 lede,Lean 的 OpenWrt(lede),Lienol 的 OpenWrt 等等...
+OpenWrt 是开源的基于 Linux 的路由器系统，除官方版本，还有其他社区或个人的定制版。如 koolshare 的 lede,Lean 的 OpenWrt(lede),Lienol 的 OpenWrt 以及 immortalwrt 等等...
 
-这里推荐使用[Lean 的 OpenWrt(lede)](https://github.com/coolsnowwolf/lede)
+~~这里推荐使用[Lean 的 OpenWrt(lede)](https://github.com/coolsnowwolf/lede)~~
 
-截至到 2020 年 3 月 11 日，推荐使用[Lienol 的 OpenWrt](https://github.com/Lienol/openwrt)
+~~截至到 2020 年 3 月 11 日，推荐使用[Lienol 的 OpenWrt](https://github.com/Lienol/openwrt)~~
+
+截止到 2024 年 7 月 14 日，推荐使用[immortalwrt](https://github.com/immortalwrt/immortalwrt)
 
 ## 安装 OpenWrt 系统
 
@@ -96,6 +98,8 @@ VirtualBox 需要 img 镜像 512 字节对齐,需要先将 img 镜像进行字�
 
 ## 配置 OpenWrt 系统
 
+首次进入系统，必要的配置如下
+
 ### 修改 lan 口 IP
 
 OpenWrt 的 lan 口默认地址为 192.168.1.1，需要根据实际情况修改该默认 IP
@@ -107,45 +111,27 @@ vi /etc/config/network
 
 也可以通过 web 后台管理界面直接修改 lan 口 IP
 
-### DHCP 配置相关
+### 关闭 IPv6
 
-```bash
-# 向dhcp添加cname配置
-uci add dhcp cname
-uci set dhcp.@cname[-1].cname="ftp.example.com"
-uci set dhcp.@cname[-1].target="www.example.com"
-uci commit dhcp
-/etc/init.d/dnsmasq restart
-```
+::: tip
+如果没有 IPv6 公网地址，最好直接关闭 IPv6
+:::
 
-```bash
-# 清除cname配置
-uci delete dhcp.@cname[-1]
-uci commit dhcp
-/etc/init.d/dnsmasq restart
-```
+1. 删除 wan6 接口
 
-## 相关插件
+![图1](/img/openwrt/1.jpg)
 
-### 主题美化
+2. 接口 lan -> DHCP 服务 -> IPv6 服务
 
-推荐使用 Argon 主题，[仓库地址](https://github.com/jerrykuku/luci-theme-argon)
+`RA 服务` `DHCPv6 服务` `NDP 代理` 设置已禁用
 
-该主题 1.7.0 版本支持自定义图片、视频，并且还有主题配置面板。
+![图2](/img/openwrt/2.jpg)
 
-该主题的 ipk 可从仓库地址里的 release 版下载，一共有两个 ipk，另外一个是主题配置面板。
+3. 勾选 `过滤IPv6 AAAA记录`
 
-由于该主题使用了 backdrop-filter 属性，此属性在 firefox 下默认是关闭的。下面图中可以看到各浏览器对此属性的支持情况。
+![图3](/img/openwrt/3.jpg)
 
-![backdrop-filter属性支持](/img/backdrop-filter.jpg)
-
-因此 firefox 需要在 about:config 将 layout.css.backdrop-filter.enabled 的值置为 true
-
-![firefox开启backdrop-filter支持](/img/firefox-aboutconfig.jpg)
-
-在主题配置面板选好背景上传之后，如图所示。
-
-![openwrt登录背景](/img/openwrt-bg.jpg)
+保存所有操作，重启生效。
 
 ## 参考链接
 
