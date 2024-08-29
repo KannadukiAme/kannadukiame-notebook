@@ -141,8 +141,19 @@ config interface 'lan'
 
 保存所有操作，重启生效。
 
+### 自定义域名映射
+
+dnsmasq 可以自定义域名映射，但需要设置 DNS 重定向
+
+![图4](/img/openwrt/4.jpg)
+
+例如将 `example.local` 及其子域名的 IP 地址指定为 192.168.1.2
+
+```
+/example.local/192.168.1.2
+```
+
 ## 参考链接
 
 - [在 Virtualbox 虚拟机中运行 OpenWrt](https://openwrt.org/zh/docs/guide-user/virtualization/virtualbox-vm)
 - [OpenWrt 构建系统安装](https://openwrt.org/docs/guide-developer/build-system/install-buildsystem)
-- [OpenWrt 配置 dhcp](https://openwrt.org/docs/guide-user/base-system/dhcp_configuration)
