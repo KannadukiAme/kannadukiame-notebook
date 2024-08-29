@@ -26,7 +26,7 @@ OS/Software: U-boot，Ubuntu-Core，OpenWrt
 
 ## 服役纪录
 
-2020 年 3 月 ~ 至今
+2020 年 3 月 ~ 2024 年 7 月
 
 ## 散热
 

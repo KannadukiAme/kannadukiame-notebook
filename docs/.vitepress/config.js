@@ -134,7 +134,7 @@ export default {
         text: 'Maid',
         items: [
           {
-            text: 'R2S(现役)',
+            text: 'R2S(已退役)',
             link: '/notes/maid/r2s.md',
           },
           {
