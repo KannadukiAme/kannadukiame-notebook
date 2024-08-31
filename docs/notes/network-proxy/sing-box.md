@@ -108,15 +108,7 @@ sing-box -c config.json run &
 
 面板管理节点入口地址 `http://x.x.x.x:9090/ui`
 
-**设置为开机启动**
-
-待续...
-
-**设置定时更新订阅任务**
-
-待续...
-
-### 在 luci 界面上添加 tun 接口
+最后在 luci 界面上添加 tun 接口即可
 
 网络 -> 接口 -> 添加新接口
 
@@ -130,72 +122,68 @@ sing-box -c config.json run &
 
 重启 openwrt 以使配置生效
 
-### 订阅更新
+### 订阅转换
 
 对于 sing-box 的订阅请使用在线订阅转换 https://github.com/Toperlock/sing-box-subscribe
 
-## 各协议配置 Example
+### 设置开机启动
 
-`Vless` + `ws`
+编辑简易的 procd 脚本 `/etc/init.d/sing-box`
 
-```json
-{
-  "tag": "proxy A",
-  "type": "vless",
-  "server": "IP/HOSTED CDN FROM CLOUDFLARE",
-  "server_port": 80,
-  "uuid": "UUID",
-  "flow": "",
-  "multiplex": {
-    "enabled": false,
-    "protocol": "smux",
-    "max_streams": 32
-  },
-  "packet_encoding": "xudp",
-  "transport": {
-    "type": "ws",
-    "path": "/buy-vless-ws-pm-telegram-at-synricha",
-    "headers": {
-      "Host": "YOURDOMAINSERVER"
-    }
-  }
+```sh
+#!/bin/sh /etc/rc.common
+USE_PROCD=1
+START=95
+STOP=01
+
+SINGBOX_DIR="/root/sing-box/sing-box-1.10.0-alpha.20-linux-amd64"
+SINGBOX_BIN="$SINGBOX_DIR/sing-box"
+SINGBOX_CONFIG="$SINGBOX_DIR/config.json"
+
+start_service() {
+    procd_open_instance
+    procd_set_param command $SINGBOX_BIN -c $SINGBOX_CONFIG -D $SINGBOX_DIR run
+    procd_set_param stdout 1
+    procd_set_param stderr 1
+    procd_close_instance
 }
 ```
 
-`Vless` + `ws` + `tls`
+给执行权限
 
-```json
-{
-  "tag": "proxy A",
-  "type": "vless",
-  "server": "IP/HOSTED CDN FROM CLOUDFLARE",
-  "server_port": 443,
-  "uuid": "UUID",
-  "flow": "",
-  "tls": {
-    "enabled": true,
-    "server_name": "YOURDOMAINSERVER",
-    "insecure": true,
-    "utls": {
-      "enabled": true,
-      "fingerprint": "chrome"
-    }
-  },
-  "multiplex": {
-    "enabled": false,
-    "protocol": "smux",
-    "max_streams": 32
-  },
-  "packet_encoding": "xudp",
-  "transport": {
-    "type": "ws",
-    "path": "/buy-vless-ws-pm-telegram-at-synricha",
-    "headers": {
-      "Host": "YOURDOMAINSERVER"
-    }
-  }
-}
+```sh
+chmod +x /etc/init.d/sing-box
 ```
+
+启用服务
+
+```sh
+/etc/init.d/sing-box enable
+```
+
+查看是否启用成功
+
+```sh
+ls -la /etc/rc.d/S*
+```
+
+出现 `sing-box` 字样就是启用成功
+
+```
+/etc/rc.d/S95sing-box -> ../init.d/sing-box
+```
+
+开启服务
+
+```sh
+/etc/init.d/sing-box start
+```
+
+此时重启 openwrt 即可实现开机启动 sing-box
+
+### 设置定时更新订阅任务
+
+待续...
 
 ## 分流规则
 
@@ -237,3 +225,4 @@ final => Proxy
 
 - [SagerNet/sing-box](https://github.com/SagerNet/sing-box)
 - [sing-box-example](https://github.com/malikshi/sing-box-examples)
+- [Create a sample procd init script](https://openwrt.org/docs/guide-developer/procd-init-script-example)
