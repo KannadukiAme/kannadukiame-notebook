@@ -136,7 +136,7 @@ USE_PROCD=1
 START=95
 STOP=01
 
-SINGBOX_DIR="/root/sing-box/sing-box-1.10.0-alpha.20-linux-amd64"
+SINGBOX_DIR="/root/sing-box/sing-box-1.10.0-beta.5-linux-amd64v3"
 SINGBOX_BIN="$SINGBOX_DIR/sing-box"
 SINGBOX_CONFIG="$SINGBOX_DIR/config.json"
 
