@@ -124,7 +124,9 @@ sing-box -c config.json run &
 
 ### 订阅转换
 
-对于 sing-box 的订阅请使用在线订阅转换 https://github.com/Toperlock/sing-box-subscribe
+对于 sing-box 的订阅转换请使用这个开源项目-> https://github.com/Toperlock/sing-box-subscribe
+
+推荐使用 docker 部署在内网机器上
 
 ### 设置开机启动
 
@@ -181,9 +183,27 @@ ls -la /etc/rc.d/S*
 
 此时重启 openwrt 即可实现开机启动 sing-box
 
-### 设置定时更新订阅任务
+### 设置定时任务
 
-待续...
+编辑 `cron` 脚本
+
+```sh
+crontab -e
+```
+
+例如，每天 4 点钟更新配置文件 `config.json` 并且十分钟后重启生效，`http://xxx` 为订阅转换地址
+
+```
+0 4 * * * wget -4 -O /root/sing-box/sing-box-1.10.0-beta.5-linux-amd64v3/config.json "http://xxx"
+10 4 * * * service sing-box restart
+
+```
+
+重启生效
+
+```sh
+service cron restart
+```
 
 ## 分流规则
 
@@ -226,3 +246,4 @@ final => Proxy
 - [SagerNet/sing-box](https://github.com/SagerNet/sing-box)
 - [sing-box-example](https://github.com/malikshi/sing-box-examples)
 - [Create a sample procd init script](https://openwrt.org/docs/guide-developer/procd-init-script-example)
+- [Scheduling tasks with cron](https://openwrt.org/docs/guide-user/base-system/cron)
