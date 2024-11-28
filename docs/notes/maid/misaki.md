@@ -38,13 +38,13 @@ CPU 分配 2 核心 HOST 类型，内存 1024MB 即可满足需求。这里需�
 使用 `scp` 命令上传 qcow2 镜像
 
 ```bash
-scp immortalwrt-23.05.1-x86-generic-generic-ext4-combined-efi.qcow2 root@192.168.2.3:/var/lib/vz/template/immortalwrt-23.05.1-x86-generic-generic-ext4-combined-efi.qcow2
+scp immortalwrt-23.05.2-x86-64-generic-ext4-combined-efi.qcow2 root@192.168.2.3:/var/lib/vz/template/immortalwrt-23.05.2-x86-64-generic-ext4-combined-efi.qcow2
 ```
 
 进入 `/var/lib/vz/template` 目录，执行导入操作
 
 ```bash
-qm importdisk 102 immortalwrt-23.05.1-x86-generic-generic-ext4-combined-efi.qcow2 local-lvm
+qm disk import 100 immortalwrt-23.05.2-x86-64-generic-ext4-combined-efi.qcow2 local-lvm
 ```
 
 回到硬件界面，编辑未使用的磁盘，设备类型改为 SATA
@@ -57,17 +57,13 @@ qm importdisk 102 immortalwrt-23.05.1-x86-generic-generic-ext4-combined-efi.qcow
 
 插件预设
 
-- ttyd 页面终端
-- clash 魔法上网工具
+- singbox 代理工具
 - argon 主题
-- argon-config 主题定制
 
 相关 luci 插件包名称， 包管理页面会自动安装相关依赖
 
-- luci-app-ttyd
-- luci-app-openclash
+- sing-box
 - luci-theme-argon
-- luci-app-argon-config
 
 ## 在虚拟机上安装 Arch Linux
 
@@ -96,7 +92,7 @@ scp archlinux.qcow2 root@192.168.2.3:/var/lib/vz/template/archlinux.qcow2
 进入 `/var/lib/vz/template` 目录，执行导入操作
 
 ```bash
-qm importdisk 100 archlinux.qcow2 local-lvm
+qm disk import 100 archlinux.qcow2 local-lvm
 ```
 
 4. **将转好的虚拟硬盘挂载到虚拟机上**
@@ -134,6 +130,6 @@ networkctl reload
 根据实际需要，已部署的应用如下
 
 - Dockge 可视化容器管理工具
-- Nextcloud 云盘
-- Uptime Kuma 服务监控
-- Dashy 可定制仪表盘
+- Alist 云盘
+- Homepage 可定制仪表盘
+- qBittorrent 资源下载

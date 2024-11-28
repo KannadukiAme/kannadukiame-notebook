@@ -99,6 +99,10 @@ export default {
             link: '/notes/web-app/nextcloud.md',
           },
           {
+            text: 'Rclone',
+            link: '/notes/web-app/rclone.md',
+          },
+          {
             text: 'Portainer',
             link: '/notes/web-app/portainer.md',
           },
