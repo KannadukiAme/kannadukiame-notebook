@@ -2,11 +2,14 @@
 layout: home
 
 hero:
-  name: Geek Record
-  text: 关于赛博空间的一些探索纪录。
-  tagline: 始于2019年 ...
+  name: Cyber Record
+  text: 神無月雨's 魔導書
+  tagline: 一些杂乱的关于电脑方面的私人笔记。
   actions:
     - theme: brand
       text: 开始阅读
       link: /notes/hypervisor/pve
+    - theme: alt
+      text: GitHub
+      link: https://github.com/KannadukiAme/kannadukiame-notebook.git
 ---

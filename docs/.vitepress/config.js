@@ -1,6 +1,6 @@
 export default {
-  title: 'Geek Record',
-  description: '关于赛博空间的一些探索纪录。',
+  title: 'Cyber Record',
+  description: '一些杂乱的关于电脑方面的私人笔记。',
   lastUpdated: true,
   themeConfig: {
     search: {
@@ -158,7 +158,7 @@ export default {
       next: '->',
     },
     footer: {
-      copyright: 'Copyright © 2019-2023 KannadukiAme',
+      copyright: 'Copyright © 2019-2024 KannadukiAme',
     },
   },
 }
