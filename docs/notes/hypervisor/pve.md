@@ -14,32 +14,19 @@
 
 ## 订阅与系统更新
 
+### 在 PVE 界面上修改默认订阅源
+
+节点 -> 更新 -> 存储库
+
 添加 `No-Subscription Repository` 订阅源
 
-编辑 `/etc/apt/sources.list`
+![](/img/hypervisor/pve-no-subscription-repository.jpg)
 
-```text
-deb http://ftp.debian.org/debian bookworm main contrib
-deb http://ftp.debian.org/debian bookworm-updates main contrib
+禁用 `Enterprise Repository` `Ceph Quincy Enterprise Repository` 订阅源
 
-# Proxmox VE pve-no-subscription repository provided by proxmox.com, // [!code ++]
-# NOT recommended for production use // [!code ++]
-deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription // [!code ++]
+![](/img/hypervisor/pve-disable-subscription-repository.jpg)
 
-# security updates
-deb http://security.debian.org/debian-security bookworm-security main contrib
-```
-
-取消 `Enterprise Repository` 订阅源
-
-编辑 `/etc/apt/sources.list.d/pve-enterprise.list`
-
-```text
-deb https://enterprise.proxmox.com/debian/pve bookworm pve-enterprise // [!code --]
-# deb https://enterprise.proxmox.com/debian/pve bookworm pve-enterprise // [!code ++]
-```
-
-更新系统
+### 系统更新
 
 ```bash
 apt-get update
