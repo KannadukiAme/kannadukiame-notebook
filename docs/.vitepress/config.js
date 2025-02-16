@@ -68,6 +68,10 @@ export default {
             text: 'sing-box',
             link: '/notes/network-proxy/sing-box.md',
           },
+          {
+            text: 'dae',
+            link: '/notes/network-proxy/dae.md',
+          },
         ],
         collapsed: false,
       },
