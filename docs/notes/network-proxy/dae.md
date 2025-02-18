@@ -15,12 +15,14 @@ DNS
 ```
 upstream {
   alidns: 'udp://223.5.5.5:53'
-  googledns: 'tcp+udp://8.8.8.8:53'
+  cloudflaredns: 'https://1.1.1.1/dns-query'
+  dnsmasq: 'udp://127.0.0.1:53'
 }
 routing {
   request {
+    qname(suffix: custom.local) -> dnsmasq
     qname(geosite:cn) -> alidns
-    fallback: googledns
+    fallback: cloudflaredns
   }
 }
 ```
@@ -35,8 +37,6 @@ dip(geoip:cn) -> direct
 domain(geosite:steam@cn) -> direct
 domain(suffix: steamserver.net) -> direct
 domain(geosite:cn) -> direct
-# Disable h3 because it usually consumes too much cpu/mem resources.
-l4proto(udp) && dport(443) -> block
 fallback: proxy
 ```
 
