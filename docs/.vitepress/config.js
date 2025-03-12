@@ -126,6 +126,10 @@ export default {
             text: 'FreshRSS',
             link: '/notes/web-app/freshrss.md',
           },
+          {
+            text: 'Forgejo',
+            link: '/notes/web-app/forgejo.md',
+          },
         ],
         collapsed: false,
       },
