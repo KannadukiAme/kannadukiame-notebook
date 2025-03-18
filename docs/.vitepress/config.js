@@ -130,6 +130,10 @@ export default {
             text: 'Forgejo',
             link: '/notes/web-app/forgejo.md',
           },
+          {
+            text: 'Navidrome',
+            link: '/notes/web-app/navidrome.md',
+          },
         ],
         collapsed: false,
       },
