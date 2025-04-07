@@ -176,7 +176,10 @@ blkid
 
 ```
 # <file system> <mount point> <type> <options> <dump> <pass>
-UUID=xxx /xxx ext4 rw,noatime,nofail,x-systemd.device-timeout=3,errors=remount-ro 0 2 // [!code ++]
+# 挂载 ext4 分区
+UUID=xxx /xxx ext4 rw,noatime,nofail,x-systemd.device-timeout=5,errors=remount-ro 0 2
+# 挂载 ntfs 分区
+UUID=xxx /xxx ntfs3 rw,noatime,nofail,x-systemd.device-timeout=5,x-systemd.automount 0 2
 ```
 
 ## 参考链接
