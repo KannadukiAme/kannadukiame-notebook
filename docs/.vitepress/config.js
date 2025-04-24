@@ -134,6 +134,10 @@ export default {
             text: 'Navidrome',
             link: '/notes/web-app/navidrome.md',
           },
+          {
+            text: 'SillyTavern',
+            link: '/notes/web-app/sillytavern.md',
+          },
         ],
         collapsed: false,
       },
