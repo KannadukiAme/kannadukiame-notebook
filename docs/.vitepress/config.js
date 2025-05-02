@@ -83,6 +83,10 @@ export default {
             link: '/notes/web-app/homepage.md',
           },
           {
+            text: 'Memos',
+            link: '/notes/web-app/memos.md',
+          },
+          {
             text: 'Dashy',
             link: '/notes/web-app/dashy.md',
           },
