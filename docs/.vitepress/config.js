@@ -87,6 +87,10 @@ export default {
             link: '/notes/web-app/memos.md',
           },
           {
+            text: 'Cloudflare Tunnel',
+            link: '/notes/web-app/cloudflare-tunnel.md',
+          },
+          {
             text: 'Dashy',
             link: '/notes/web-app/dashy.md',
           },
