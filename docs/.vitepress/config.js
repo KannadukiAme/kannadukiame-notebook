@@ -98,6 +98,10 @@ export default {
             link: '/notes/web-app/memos.md',
           },
           {
+            text: 'Vaultwarden',
+            link: '/notes/web-app/vaultwarden.md',
+          },
+          {
             text: 'AList',
             link: '/notes/web-app/alist.md',
           },
