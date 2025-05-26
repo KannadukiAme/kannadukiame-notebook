@@ -82,6 +82,14 @@ export default {
         text: 'Web Application',
         items: [
           {
+            text: 'Portainer',
+            link: '/notes/web-app/portainer.md',
+          },
+          {
+            text: 'Traefik',
+            link: '/notes/web-app/traefik.md',
+          },
+          {
             text: 'Homepage',
             link: '/notes/web-app/homepage.md',
           },
@@ -90,8 +98,20 @@ export default {
             link: '/notes/web-app/memos.md',
           },
           {
+            text: 'AList',
+            link: '/notes/web-app/alist.md',
+          },
+          {
             text: 'Cloudflare Tunnel',
             link: '/notes/web-app/cloudflare-tunnel.md',
+          },
+          {
+            text: 'Navidrome',
+            link: '/notes/web-app/navidrome.md',
+          },
+          {
+            text: 'SillyTavern',
+            link: '/notes/web-app/sillytavern.md',
           },
           {
             text: 'Dashy',
@@ -102,24 +122,12 @@ export default {
             link: '/notes/web-app/qbittorrent.md',
           },
           {
-            text: 'Traefik',
-            link: '/notes/web-app/traefik.md',
-          },
-          {
-            text: 'AList',
-            link: '/notes/web-app/alist.md',
-          },
-          {
             text: 'Nextcloud',
             link: '/notes/web-app/nextcloud.md',
           },
           {
             text: 'Rclone',
             link: '/notes/web-app/rclone.md',
-          },
-          {
-            text: 'Portainer',
-            link: '/notes/web-app/portainer.md',
           },
           {
             text: 'Dockge',
@@ -140,14 +148,6 @@ export default {
           {
             text: 'Forgejo',
             link: '/notes/web-app/forgejo.md',
-          },
-          {
-            text: 'Navidrome',
-            link: '/notes/web-app/navidrome.md',
-          },
-          {
-            text: 'SillyTavern',
-            link: '/notes/web-app/sillytavern.md',
           },
         ],
         collapsed: false,
