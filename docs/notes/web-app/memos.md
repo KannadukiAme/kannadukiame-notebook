@@ -2,20 +2,26 @@
 
 > An open-source, lightweight note-taking solution. The pain-less way to create your meaningful notes. Your Notes, Your Way.
 
-## 部署
+## 容器部署
 
-`compose.yml` 配置如下
-
-```yml
+```yaml
 services:
   memos:
     image: neosmemo/memos:stable
     container_name: memos
-    volumes:
-      - ~/.memos/:/var/opt/memos
-    ports:
-      - 5230:5230
     restart: unless-stopped
+    volumes:
+      - /root/memos/:/var/opt/memos
+    networks:
+      - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.memos.rule=Host(`memos.misaki.us.kg`)
+      - traefik.http.routers.memos.entrypoints=https
+      - traefik.http.routers.memos.tls=true
+networks:
+  proxy:
+    external: true
 ```
 
 ## 备份与迁移
