@@ -1,6 +1,9 @@
 export default {
   title: 'Cyber Record',
   description: '一些杂乱的关于电脑方面的私人笔记。',
+  markdown: {
+    lineNumbers: true,
+  },
   lastUpdated: true,
   themeConfig: {
     search: {
