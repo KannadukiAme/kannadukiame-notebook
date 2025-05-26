@@ -2,26 +2,30 @@
 
 > 🗂️ A file list program that supports multiple storage, powered by Gin and Solidjs.
 
-## 部署
+## 容器部署
 
-`compose.yml` 配置如下
-
-```yml
-version: '3.3'
+```yaml
 services:
   alist:
-    image: 'xhofe/alist:latest'
+    image: xhofe/alist:latest
     container_name: alist
-    volumes:
-      - '/etc/alist:/opt/alist/data'
-    ports:
-      - '5244:5244'
-    environment:
-      - PUID=0
-      - PGID=0
-      - UMASK=022
     restart: unless-stopped
+    volumes:
+      - /etc/alist:/opt/alist/data
+      - /data:/downloads
+    networks:
+      - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.alist.rule=Host(`alist.misaki.us.kg`)
+      - traefik.http.routers.alist.entrypoints=https
+      - traefik.http.routers.alist.tls=true
+networks:
+  proxy:
+    external: true
 ```
+
+- `/data:/downloads` 为自定义挂载目录
 
 ## 参考链接
 
