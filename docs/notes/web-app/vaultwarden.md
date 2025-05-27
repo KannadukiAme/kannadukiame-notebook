@@ -11,20 +11,22 @@ services:
     container_name: vaultwarden
     restart: unless-stopped
     environment:
-      DOMAIN: https://vw.misaki.us.kg
+      DOMAIN: https://${VAULTWARDEN_DOMAIN}
     volumes:
       - /root/vw/data/:/data/
     networks:
       - proxy
     labels:
       - traefik.enable=true
-      - traefik.http.routers.vaultwarden.rule=Host(`vw.misaki.us.kg`)
+      - traefik.http.routers.vaultwarden.rule=Host(`${VAULTWARDEN_DOMAIN}`)
       - traefik.http.routers.vaultwarden.entrypoints=https
       - traefik.http.routers.vaultwarden.tls=true
 networks:
   proxy:
     external: true
 ```
+
+- `${VAULTWARDEN_DOMAIN}` 为自定义域名
 
 ## 自动更新
 
