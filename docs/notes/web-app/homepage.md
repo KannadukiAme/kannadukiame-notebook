@@ -4,21 +4,33 @@
 
 ## 部署
 
-`compose.yml` 配置如下
-
 ```yml
-version: '3.3'
 services:
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
     container_name: homepage
-    ports:
-      - 3000:3000
-    volumes:
-      - /path/to/config:/app/config # Make sure your local config directory exists
-      - /var/run/docker.sock:/var/run/docker.sock:ro # optional, for docker integrations
     restart: unless-stopped
+    volumes:
+      - /root/homepage/images:/app/public/images
+      - /root/homepage/config:/app/config
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      HOMEPAGE_ALLOWED_HOSTS: ${HOMEPAGE_DOMAIN}
+    networks:
+      - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.homepage.rule=Host(`${HOMEPAGE_DOMAIN}`)
+      - traefik.http.routers.homepage.entrypoints=https
+      - traefik.http.routers.homepage.tls=true
+networks:
+  proxy:
+    external: true
 ```
+
+- `${HOMEPAGE_DOMAIN}` 自定义域名
+- `/app/config` 存放所有配置文件
+- `/var/run/docker.sock:/var/run/docker.sock:ro` 用于 docker 容器整合
 
 ## 配置
 
