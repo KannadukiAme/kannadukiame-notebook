@@ -16,13 +16,15 @@ services:
       - proxy
     labels:
       - traefik.enable=true
-      - traefik.http.routers.memos.rule=Host(`memos.misaki.us.kg`)
+      - traefik.http.routers.memos.rule=Host(`${MEMOS_DOMAIN}`)
       - traefik.http.routers.memos.entrypoints=https
       - traefik.http.routers.memos.tls=true
 networks:
   proxy:
     external: true
 ```
+
+- `${MEMOS_DOMAIN}` 为自定义域名
 
 ## 备份与迁移
 
