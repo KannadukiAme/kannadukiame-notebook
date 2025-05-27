@@ -17,7 +17,7 @@ services:
       - proxy
     labels:
       - traefik.enable=true
-      - traefik.http.routers.alist.rule=Host(`alist.misaki.us.kg`)
+      - traefik.http.routers.alist.rule=Host(`${ALIST_DOMAIN}`)
       - traefik.http.routers.alist.entrypoints=https
       - traefik.http.routers.alist.tls=true
 networks:
@@ -25,6 +25,7 @@ networks:
     external: true
 ```
 
+- `${ALIST_DOMAIN}` 为自定义域名
 - `/data:/downloads` 为自定义挂载目录
 
 ## 参考链接
