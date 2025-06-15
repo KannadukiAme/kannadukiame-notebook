@@ -19,6 +19,11 @@ services:
       - traefik.http.routers.memos.rule=Host(`${MEMOS_DOMAIN}`)
       - traefik.http.routers.memos.entrypoints=https
       - traefik.http.routers.memos.tls=true
+      - homepage.group=Container
+      - homepage.name=memos
+      - homepage.icon=sh-memos.png
+      - homepage.href=https://${MEMOS_DOMAIN}/
+      - homepage.description=个人便签
 networks:
   proxy:
     external: true
