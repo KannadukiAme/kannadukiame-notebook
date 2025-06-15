@@ -19,15 +19,21 @@ services:
       - proxy
     labels:
       - traefik.enable=true
-      - traefik.http.routers.portainer.rule=Host(`portainer.misaki.us.kg`)
+      - traefik.http.routers.portainer.rule=Host(`${PORTAINER_DOMAIN}`)
       - traefik.http.services.portainer.loadbalancer.server.port=9000
       - traefik.http.routers.portainer.entrypoints=https
       - traefik.http.routers.portainer.tls=true
+      - homepage.group=Container
+      - homepage.name=portainer
+      - homepage.icon=sh-portainer.png
+      - homepage.href=https://${PORTAINER_DOMAIN}/
+      - homepage.description=容器管理
 networks:
   proxy:
     external: true
 ```
 
+- `${PORTAINER_DOMAIN}` 为自定义域名
 - 由于容器内开放多个端口且低数字端口 8000 为废弃端口，traefik 里需要手动指定为 9000 端口
 - `/data` 目录存放 portianer 的容器数据
 
