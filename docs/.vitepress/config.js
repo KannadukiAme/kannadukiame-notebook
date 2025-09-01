@@ -106,6 +106,10 @@ export default {
             link: '/notes/web-app/alist.md',
           },
           {
+            text: 'copyparty',
+            link: '/notes/web-app/copyparty.md',
+          },
+          {
             text: 'Cloudflare Tunnel',
             link: '/notes/web-app/cloudflare-tunnel.md',
           },
