@@ -33,6 +33,11 @@ services:
       - traefik.http.routers.copyparty.rule=Host(`${COPYPARTY_DOMAIN}`)
       - traefik.http.routers.copyparty.entrypoints=https
       - traefik.http.routers.copyparty.tls=true
+      - homepage.group=Container
+      - homepage.name=copyparty
+      - homepage.icon=sh-copyparty.png
+      - homepage.href=https://${COPYPARTY_DOMAIN}/
+      - homepage.description=文件管理器
 networks:
   proxy:
     external: true
