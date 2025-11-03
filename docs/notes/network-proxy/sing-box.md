@@ -137,9 +137,71 @@ tproxy 模式需安装以下依赖
 
 **使用 nftables 配置防火墙**
 
+https://hev.cc/posts/2021/transparent-proxy-with-nftables/
+
+```
+table inet mangle {
+    set byp4 {
+        typeof ip daddr
+        flags interval
+        elements = { 0.0.0.0/8, 10.0.0.0/8,
+                 127.0.0.0/8, 169.254.0.0/16,
+                 172.16.0.0/12, 192.0.0.0/24,
+                 192.0.2.0/24, 192.88.99.0/24,
+                 192.168.0.0/16, 198.18.0.0/15,
+                 198.51.100.0/24, 203.0.113.0/24,
+                 224.0.0.0/4, 240.0.0.0-255.255.255.255 }
+    }
+
+    set byp6 {
+        typeof ip6 daddr
+        flags interval
+        elements = { ::,
+                 ::1,
+                 ::ffff:0:0:0/96,
+                 64:ff9b::/96,
+                 100::/64,
+                 2001::/32,
+                 2001:20::/28,
+                 2001:db8::/32,
+                 2002::/16,
+                 fc00::/7,
+                 fe80::/10,
+                 ff00::-ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff }
+    }
+
+    chain prerouting {
+        type filter hook prerouting priority mangle; policy accept;
+        tcp dport 53 tproxy to :1080 meta mark set 0x00000440 accept
+        udp dport 53 tproxy to :1080 meta mark set 0x00000440 accept
+        ip daddr @byp4 return
+        ip6 daddr @byp6 return
+        meta l4proto { tcp, udp } tproxy to :1080 meta mark set 0x440 accept
+    }
+
+    # Only for local mode
+    chain output {
+        type route hook output priority mangle; policy accept;
+        tcp dport 53 meta mark set 0x00000440
+        udp dport 53 meta mark set 0x00000440
+        ip daddr @byp4 return
+        ip6 daddr @byp6 return
+        meta l4proto { tcp, udp } meta mark set 0x440
+    }
+}
+```
+
+```bash
+ip rule add fwmark 1088 table 100
+ip route add local default dev lo table 100
+
+ip -6 rule add fwmark 1088 table 100
+ip -6 route add local default dev lo table 100
+```
+
 ### 小结
 
-待续...
+tproxy 代理模式相对配置繁琐，但比 tun 模式转发效率高，cpu 占用低。
 
 ## realip 与 fakeip
 
@@ -196,6 +258,8 @@ tproxy 模式需安装以下依赖
 ```
 
 ### 小结
+
+待续...
 
 ## 定时服务
 
