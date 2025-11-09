@@ -26,7 +26,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /root/traefik/traefik.yml:/traefik.yml:ro
       - /root/traefik/acme.json:/acme.json
-      - /root/traefik/config.yml:/config.yml:ro
+      # - /root/traefik/config.yml:/config.yml:ro
     labels:
       - traefik.enable=true
       - traefik.http.routers.traefik.entrypoints=http
@@ -46,7 +46,11 @@ networks:
     external: true
 ```
 
-`traefik.yml`
+- `CF_DNS_API_TOKEN` cloudflare 的 api-token ，权限设置为 `区域-区域-读取 区域-DNS-编辑` 即可
+- `TRAEFIK_DOMAIN` treafik 的自定义域名
+- `MY_DOMAIN` 申请的域名
+
+在当前目录下创建 `traefik.yml` 以及 `acme.json`
 
 ```yml
 api:
