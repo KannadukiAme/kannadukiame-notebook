@@ -57,6 +57,8 @@ networks:
   e2dsa  # enable file indexing and filesystem scanning
   e2ts   # and enable multimedia indexing
   z, qr  # and zeroconf and qrcode (you can comma-separate arguments)
+  ver    # show copyparty version in the controlpanel
+  name: dataserver  # change the server-name that's displayed in the browser
 
 # create users:
 [accounts]
