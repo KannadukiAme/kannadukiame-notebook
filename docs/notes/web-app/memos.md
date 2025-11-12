@@ -4,32 +4,24 @@
 
 ## 容器部署
 
+`compose.yml`
+
 ```yaml
 services:
-  memos:
+  app:
     image: neosmemo/memos:stable
     container_name: memos
     restart: unless-stopped
+    ports:
+      - '5230:5230'
     volumes:
-      - /root/memos/:/var/opt/memos
+      - /root/memos:/var/opt/memos
     networks:
       - proxy
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.memos.rule=Host(`${MEMOS_DOMAIN}`)
-      - traefik.http.routers.memos.entrypoints=https
-      - traefik.http.routers.memos.tls=true
-      - homepage.group=Container
-      - homepage.name=memos
-      - homepage.icon=sh-memos.png
-      - homepage.href=https://${MEMOS_DOMAIN}/
-      - homepage.description=个人便签
 networks:
   proxy:
     external: true
 ```
-
-- `${MEMOS_DOMAIN}` 为自定义域名
 
 ## 备份与迁移
 
