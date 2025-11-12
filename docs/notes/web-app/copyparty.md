@@ -4,15 +4,19 @@
 
 ## 容器部署
 
+`compose.yml`
+
 ```yaml
 services:
-  copyparty:
+  app:
     image: copyparty/ac:latest
     container_name: copyparty
     restart: unless-stopped
+    ports:
+      - '3923:3923'
     volumes:
       - /root/copyparty/cfgdir:/cfg
-      - /data:/w
+      - /mnt/data:/w
     environment:
       LD_PRELOAD: /usr/lib/libmimalloc-secure.so.NOPE
       # enable mimalloc by replacing "NOPE" with "2" for a nice speed-boost (will use twice as much ram)
@@ -28,23 +32,13 @@ services:
       start_period: 15s
     networks:
       - proxy
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.copyparty.rule=Host(`${COPYPARTY_DOMAIN}`)
-      - traefik.http.routers.copyparty.entrypoints=https
-      - traefik.http.routers.copyparty.tls=true
-      - homepage.group=Container
-      - homepage.name=copyparty
-      - homepage.icon=sh-copyparty.png
-      - homepage.href=https://${COPYPARTY_DOMAIN}/
-      - homepage.description=文件管理器
 networks:
   proxy:
     external: true
 ```
 
 - `/root/copyparty/cfgdir:/cfg` 映射配置文件目录
-- `/data:/w` 映射共享文件目录
+- `/mnt/data:/w` 映射共享文件目录
 
 ## config
 
@@ -58,7 +52,7 @@ networks:
   e2ts   # and enable multimedia indexing
   z, qr  # and zeroconf and qrcode (you can comma-separate arguments)
   ver    # show copyparty version in the controlpanel
-  name: dataserver  # change the server-name that's displayed in the browser
+  name: servername  # change the server-name that's displayed in the browser
 
 # create users:
 [accounts]
