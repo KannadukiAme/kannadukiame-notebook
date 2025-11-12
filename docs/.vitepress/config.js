@@ -86,6 +86,10 @@ export default {
             link: '/notes/web-app/portainer.md',
           },
           {
+            text: 'Nginx Proxy Manager',
+            link: '/notes/web-app/nginx-proxy-manager.md',
+          },
+          {
             text: 'Traefik',
             link: '/notes/web-app/traefik.md',
           },
