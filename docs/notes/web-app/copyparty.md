@@ -6,7 +6,7 @@
 
 ```yaml
 services:
-  alist:
+  copyparty:
     image: copyparty/ac:latest
     container_name: copyparty
     restart: unless-stopped
