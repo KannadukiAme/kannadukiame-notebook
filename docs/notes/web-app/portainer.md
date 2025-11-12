@@ -1,10 +1,10 @@
 # Portainer
 
-> docker 容器 web 界面编排工具
+> Making Docker and Kubernetes management easy.
 
 ## 容器部署
 
-这里使用免费的社区版，即 **portainer-ce**
+`compose.yml`
 
 ```yaml
 services:
@@ -12,32 +12,19 @@ services:
     image: portainer/portainer-ce:latest
     container_name: portainer
     restart: unless-stopped
+    ports:
+      - '9000:9000'
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /root/portainer/data:/data
     networks:
       - proxy
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.portainer.rule=Host(`${PORTAINER_DOMAIN}`)
-      - traefik.http.services.portainer.loadbalancer.server.port=9000
-      - traefik.http.routers.portainer.entrypoints=https
-      - traefik.http.routers.portainer.tls=true
-      - homepage.group=Container
-      - homepage.name=portainer
-      - homepage.icon=sh-portainer.png
-      - homepage.href=https://${PORTAINER_DOMAIN}/
-      - homepage.description=容器管理
 networks:
   proxy:
     external: true
 ```
 
-- `${PORTAINER_DOMAIN}` 为自定义域名
-- 由于容器内开放多个端口且低数字端口 8000 为废弃端口，traefik 里需要手动指定为 9000 端口
 - `/data` 目录存放 portianer 的容器数据
-
-## 备份与迁移
 
 ## 参考链接
 
