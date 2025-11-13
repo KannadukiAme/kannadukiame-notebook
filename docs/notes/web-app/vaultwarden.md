@@ -10,6 +10,8 @@ services:
     image: vaultwarden/server:latest
     container_name: vaultwarden
     restart: unless-stopped
+    ports:
+      - '8000:80'
     environment:
       DOMAIN: https://${VAULTWARDEN_DOMAIN}
       SIGNUPS_ALLOWED: true
@@ -17,16 +19,6 @@ services:
       - /root/vw/data/:/data/
     networks:
       - proxy
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.vaultwarden.rule=Host(`${VAULTWARDEN_DOMAIN}`)
-      - traefik.http.routers.vaultwarden.entrypoints=https
-      - traefik.http.routers.vaultwarden.tls=true
-      - homepage.group=Container
-      - homepage.name=vaultwarden
-      - homepage.icon=sh-vaultwarden.png
-      - homepage.href=https://${VAULTWARDEN_DOMAIN}/
-      - homepage.description=密码保管库
 networks:
   proxy:
     external: true
