@@ -90,6 +90,10 @@ export default {
             link: '/notes/web-app/nginx-proxy-manager.md',
           },
           {
+            text: 'DDNS-GO',
+            link: '/notes/web-app/ddns-go.md',
+          },
+          {
             text: 'Traefik',
             link: '/notes/web-app/traefik.md',
           },
