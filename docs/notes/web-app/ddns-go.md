@@ -1,5 +1,7 @@
 # DDNS-GO
 
+Simple and easy to use DDNS. Support Aliyun, Tencent Cloud, Dnspod, Cloudflare, Callback, Huawei Cloud, Baidu Cloud, Porkbun, GoDaddy, Namecheap, NameSilo...
+
 ## 容器部署
 
 `compose.yml`
@@ -16,6 +18,8 @@ services:
       - /root/ddns-go:/root
     network_mode: host
 ```
+
+- `network_mode: host` 网络模式设置为主机模式，以便获取本机所在 IP
 
 ## 参考链接
 
