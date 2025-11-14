@@ -137,10 +137,8 @@ tproxy 模式需安装以下依赖
 
 **使用 nftables 配置防火墙**
 
-https://hev.cc/posts/2021/transparent-proxy-with-nftables/
-
 ```
-table inet mangle {
+table inet singbox {
     set byp4 {
         typeof ip daddr
         flags interval
@@ -324,6 +322,10 @@ geosite-geolocation-cn => direct
 
 final => Proxy
 
+自建局域网服务域名走直连
+
+domain_suffix: xxxx.local => direct
+
 ## 其他
 
 如果是直接使用二进制包安装的 sing-box，手动添加 openwrt 服务请参考以下操作
@@ -389,3 +391,4 @@ ls -la /etc/rc.d/S*
 - [sing-box-example](https://github.com/malikshi/sing-box-examples)
 - [Create a sample procd init script](https://openwrt.org/docs/guide-developer/procd-init-script-example)
 - [Scheduling tasks with cron](https://openwrt.org/docs/guide-user/base-system/cron)
+- [nftables tproxy 规则](https://hev.cc/posts/2021/transparent-proxy-with-nftables/)
