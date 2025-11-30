@@ -94,6 +94,10 @@ export default {
             link: '/notes/web-app/ddns-go.md',
           },
           {
+            text: 'redroid',
+            link: '/notes/web-app/redroid.md',
+          },
+          {
             text: 'Traefik',
             link: '/notes/web-app/traefik.md',
           },
