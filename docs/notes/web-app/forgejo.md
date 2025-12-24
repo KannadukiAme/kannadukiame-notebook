@@ -7,53 +7,25 @@
 `compose.yml` 配置如下
 
 ```yml
-networks:
-  forgejo:
-    external: false
 services:
   server:
-    image: codeberg.org/forgejo/forgejo:9
+    image: codeberg.org/forgejo/forgejo:13
     container_name: forgejo
-    environment:
-      - USER_UID=1000
-      - USER_GID=1000
-    restart: always
-    networks:
-      - forgejo
-    volumes:
-      - ./forgejo:/data
-      - /etc/timezone:/etc/timezone:ro
-      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
     ports:
-      - 3000:3000
-      - 222:22
-```
-
-`compose.yml` with `treafik` 配置如下
-
-```yml
-services:
-  forgejo:
-    image: codeberg.org/forgejo/forgejo:9
-    container_name: forgejo
+      - '3000:3000'
+      - '222:22'
     environment:
       - USER_UID=1000
       - USER_GID=1000
-    restart: always
-    networks:
-      - traefik_default
     volumes:
-      - ./forgejo:/data
+      - /root/forgejo/data:/data
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.forgejo.rule=Host(`git.hostname.com`)
-      - traefik.http.services.forgejo.loadbalancer.server.port=3000
-      - traefik.tcp.services.forgejo.loadbalancer.server.port=22
-      - traefik.http.routers.forgejo.entrypoints=web
+    networks:
+      - proxy
 networks:
-  traefik_default:
+  proxy:
     external: true
 ```
 
