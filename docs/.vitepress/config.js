@@ -102,8 +102,16 @@ export default {
             link: '/notes/web-app/traefik.md',
           },
           {
+            text: 'Syncthing',
+            link: '/notes/web-app/syncthing.md',
+          },
+          {
             text: 'Homepage',
             link: '/notes/web-app/homepage.md',
+          },
+          {
+            text: 'Woodpecker',
+            link: '/notes/web-app/woodpecker.md',
           },
           {
             text: 'Memos',
