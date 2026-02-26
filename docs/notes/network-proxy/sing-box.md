@@ -29,6 +29,8 @@ opkg install sing-box
 ```bash
 # 启用服务并保存
 uci set sing-box.main.enabled='1'
+# 如果要使用tun模式务必设置为root
+uci set sing-box.main.user='root'
 uci commit
 
 # sing-box 启动！
