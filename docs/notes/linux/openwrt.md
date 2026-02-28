@@ -4,13 +4,21 @@
 
 ## 前言
 
-OpenWrt 是开源的基于 Linux 的路由器系统，除官方版本，还有其他社区或个人的定制版。如 koolshare 的 lede,Lean 的 OpenWrt(lede),Lienol 的 OpenWrt 以及 immortalwrt 等等...
+OpenWrt 是开源的基于 Linux 的路由器系统，除官方版本，还有其他社区或个人的定制版。
 
-~~这里推荐使用[Lean 的 OpenWrt(lede)](https://github.com/coolsnowwolf/lede)~~
+推荐使用 ImmortalWrt，安装与配置均以此版本为例。
 
-~~截至到 2020 年 3 月 11 日，推荐使用[Lienol 的 OpenWrt](https://github.com/Lienol/openwrt)~~
+最近更新版本 `OpenWrt 24.10`
 
-截止到 2024 年 7 月 14 日，推荐使用[immortalwrt](https://github.com/immortalwrt/immortalwrt)
+**官方版**
+
+- [openwrt](https://github.com/openwrt/openwrt)
+
+**社区版**
+
+- [lede](https://github.com/coolsnowwolf/lede)
+- [Lienol's OpenWrt](https://github.com/Lienol/openwrt)
+- [ImmortalWrt](https://github.com/immortalwrt/immortalwrt)
 
 ## 安装 OpenWrt 系统
 
@@ -119,6 +127,67 @@ config interface 'lan'
 
 也可以通过 web 后台管理界面直接修改 lan 口 IP
 
+### 系统扩容
+
+默认 openwrt 镜像分配的初始空间较少，此时需要扩容
+
+假设要扩容的存储设备是 `/dev/sda`
+
+通常会包含以下两个分区
+
+- `/dev/sda1` GRUB 和内核所在分区
+- `/dev/sda2` root 文件系统所在分区 (通常有两种类型的分区 squashfs 和 ext4)
+
+1. 扩展 root 分区
+
+使用 `parted` 分区工具对 `/dev/sda` 进行扩容
+
+```bash
+# Install packages
+opkg update
+opkg install parted
+
+# Identify disk name and partition number
+parted -l -s
+
+# Expand root partition
+parted -f -s /dev/sda resizepart 2 100%
+
+# Apply changes
+reboot
+```
+
+2. 扩展 root 文件系统
+
+使用 `losetup` 映射 `/dev/loop0` 到 `/dev/sda2` 并用 `resize2fs` 扩展 `/dev/loop0`
+
+```bash
+# Install packages
+opkg update
+opkg install losetup resize2fs
+
+# Map loop device to root partition
+losetup /dev/loop0 /dev/sda2 2> /dev/null
+
+# Expand root filesystem
+resize2fs -f /dev/loop0
+
+# Apply changes
+reboot
+```
+
+### 自定义域名映射
+
+dnsmasq 可以自定义域名映射，但需要设置 DNS 重定向
+
+![图4](/img/openwrt/4.jpg)
+
+例如将 `example.local` 及其子域名的 IP 地址指定为 192.168.1.2
+
+```
+/example.local/192.168.1.2
+```
+
 ### 关闭 IPv6
 
 ::: tip
@@ -141,19 +210,12 @@ config interface 'lan'
 
 保存所有操作，重启生效。
 
-### 自定义域名映射
+### 配置 IPv6
 
-dnsmasq 可以自定义域名映射，但需要设置 DNS 重定向
-
-![图4](/img/openwrt/4.jpg)
-
-例如将 `example.local` 及其子域名的 IP 地址指定为 192.168.1.2
-
-```
-/example.local/192.168.1.2
-```
+等待实践...
 
 ## 参考链接
 
 - [在 Virtualbox 虚拟机中运行 OpenWrt](https://openwrt.org/zh/docs/guide-user/virtualization/virtualbox-vm)
 - [OpenWrt 构建系统安装](https://openwrt.org/docs/guide-developer/build-system/install-buildsystem)
+- [Expanding root partition and filesystem](https://openwrt.org/docs/guide-user/installation/openwrt_x86#expanding_root_partition_and_filesystem)
