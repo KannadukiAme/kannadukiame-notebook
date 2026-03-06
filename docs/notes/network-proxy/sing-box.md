@@ -4,21 +4,13 @@
 
 ## 安装
 
-在 openwrt 中安装有以下两种方式，其他 Linux 发行版下的安装也可参考。推荐用第二种方式安装。
+:::info
+这里只记录 sing-box 部署在 openwrt 网关上的相关实践。其他 linux 发行版系统如果作为网关使用，也可参考。
+:::
 
-**1. 从 git 仓库中的二进制可执行文件安装**
+在 openwrt 中安装主要有以下两种方式，推荐使用用第一种方式安装。
 
-[SagerNet/sing-box](https://github.com/SagerNet/sing-box) 从官方仓库地址进入 release 页面
-
-x86 架构 64 位 openwrt 系统直接下载这个 `sing-box-1.12.12-linux-amd64.tar.gz`，解压到任意目录即可
-
-直接在当前目录下执行即可
-
-```bash
-sing-box -c config.json run
-```
-
-**2. 从 opkg 包管理中安装**
+1. 从 opkg 包管理中安装
 
 ```bash
 opkg install sing-box
@@ -36,6 +28,27 @@ uci commit
 # sing-box 启动！
 service sing-box start
 ```
+
+2. 从 git 仓库中的 ipk 文件进行安装
+
+点击这里 [SagerNet/sing-box](https://github.com/SagerNet/sing-box) 从官方仓库地址进入 release 页面
+
+::: warning
+需要注意的是，以 r2s 为例，这里需要下载的是 `sing-box_1.13.1_openwrt_aarch64_generic.ipk`，而不是 `sing-box_1.13.1_openwrt_aarch64_cortex-a53.ipk`  
+否则会提示架构不兼容，这可能与编译平台有关
+:::
+
+如果是 x86 软路由中安装，只需要下载 `sing-box_1.13.1_openwrt_x86_64.ipk`, 其他架构以此类推
+
+将下载好的 ipk 上传至 openwrt
+
+```
+opkg install xxx.ipk
+```
+
+或者是在 luci 界面直接上传安装
+
+安装过程中可能提示缺少相关包，先安装之后在重试即可
 
 ## 代理模式
 
@@ -327,6 +340,34 @@ final => Proxy
 自建局域网服务域名走直连
 
 domain_suffix: xxxx.local => direct
+
+## 内网域名解析
+
+本机dns (这里指的是 openwrt)
+
+```json
+"dns": {
+  "servers": [
+    {
+      "tag": "dnsmasq",
+      "type": "local",
+      "prefer_go": false
+    }
+  ]
+}
+```
+
+自定义域名走 dnsmasq
+
+```json
+"rules": [
+  {
+    "ip_version": 4,
+    "domain_suffix": ["custom.local"],
+    "server": "dnsmasq"
+  }
+]
+```
 
 ## 其他
 
