@@ -214,6 +214,26 @@ dnsmasq 可以自定义域名映射，但需要设置 DNS 重定向
 
 等待实践...
 
+## 其他
+
+### 使用新版包管理 APK 安装第三方包
+
+::: warning
+从 **openwrt 25.10** 版本起，官方正式将包管理从 `opkg` 全部迁移到 `apk`
+:::
+
+直接在Luci界面上通过上传是无法安装的，会报错，显示不可信任的签名
+
+```
+ERROR: /tmp/upload.apk: UNTRUSTED signature
+```
+
+此时只能使用命令加自定义参数才能安装
+
+```bash
+apk add xxx.apk --allow-untrusted
+```
+
 ## 参考链接
 
 - [在 Virtualbox 虚拟机中运行 OpenWrt](https://openwrt.org/zh/docs/guide-user/virtualization/virtualbox-vm)
