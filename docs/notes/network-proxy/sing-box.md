@@ -21,7 +21,7 @@ opkg install sing-box
 ```bash
 # 启用服务并保存
 uci set sing-box.main.enabled='1'
-# 如果要使用tun模式务必设置为root
+# 如果要使用tun模式务必设置为root (1.13版本以后不需要设置)
 uci set sing-box.main.user='root'
 uci commit
 
@@ -311,7 +311,45 @@ service cron restart
 
 sing-box 的规则集数据可以从[这里](https://github.com/MetaCubeX/meta-rules-dat/tree/sing)获取
 
-### 常见需求
+### 简易分流规则
+
+这里提出一个较为通用的简易分流规则，在保护隐私的基础上作最简化处理。一来可以大大降低 sing-box 的分流开销，二来可以容易地维护分流规则。
+
+**对于DNS的分流**
+
+::: info
+localDns 国内DNS `114.114.114.114` 或者是当地运营商的DNS 建议直接使用udp
+
+proxyDns 国外DNS `8.8.8.8` `1.1.1.1` 一般在谷歌和cloudflare之间二选一 可以使用doh也可以tls
+:::
+
+国内网站域名走国内DNS
+
+geosite-geolocation-cn => localDns
+
+其他网站域名走国外DNS
+
+final => proxyDns
+
+**对于路由的分流**
+
+国内网站走直连
+
+geosite-geolocation-cn => direct
+
+国内IP走直连
+
+geoip-cn => direct
+
+其他走代理
+
+final => proxy
+
+这个规则可以保证大部分的国内网站走直连，并保证DNS不会泄漏且性能最佳。
+
+### 其他自定义分流规则
+
+根据自身需求可以追加一些分流规则，但需要性能较强的软路由
 
 屏蔽广告
 
@@ -328,14 +366,6 @@ geosite-dmm => Japan
 Baha 走台湾代理
 
 geosite-bahamut => Taiwan
-
-国内网站走直连
-
-geosite-geolocation-cn => direct
-
-国外网站走代理
-
-final => Proxy
 
 自建局域网服务域名走直连
 
