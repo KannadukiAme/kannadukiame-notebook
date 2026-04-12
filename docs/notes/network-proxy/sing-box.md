@@ -399,6 +399,42 @@ domain_suffix: xxxx.local => direct
 ]
 ```
 
+## 常见问题
+
+**如何跳过 ChatGPT 的 IPv6 检测，但又不想禁用 IPv6，如何解决?**
+
+1. 解析 ChatGPT 的网站只能返回 A 记录，将 AAAA 记录屏蔽
+
+```json
+{
+  "dns": {
+    "rules": [
+      {
+        "rule_set": "geosite-openai",
+        "server": "proxyDns",
+        "strategy": "ipv4_only"
+      }
+    ]
+  }
+}
+```
+
+2. 屏蔽访问 ChatGPT 的 IPv6 路由
+
+```json
+{
+  "route": {
+    "rules": [
+      {
+        "rule_set": "geosite-openai",
+        "ip_version": 6,
+        "action": "reject"
+      }
+    ]
+  }
+}
+```
+
 ## 其他
 
 如果是直接使用二进制包安装的 sing-box，手动添加 openwrt 服务请参考以下操作
