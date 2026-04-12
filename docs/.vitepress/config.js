@@ -82,6 +82,10 @@ export default {
         text: 'Web Application',
         items: [
           {
+            text: 'Hermes Agent',
+            link: '/notes/web-app/hermes-agent.md',
+          },
+          {
             text: 'Portainer',
             link: '/notes/web-app/portainer.md',
           },
