@@ -274,6 +274,56 @@ tproxy 代理模式相对配置繁琐，但比 tun 模式转发效率高，cpu �
 
 待续...
 
+## tailscale
+
+sing-box 内置了 `tailscale` 可以异地组网
+
+:::info 前置条件
+确认 sing-box 的编译版本是否包含 `tailscale`
+
+```console
+root@ImmortalWrt:~# sing-box version
+sing-box version 1.14.0-alpha.23
+
+Environment: go1.25.9 linux/amd64
+Tags: with_gvisor,with_quic,with_dhcp,with_wireguard,with_utls,with_acme,with_clash_api,with_tailscale,with_ccm,with_ocm,with_cloudflared,with_naive_outbound,badlinkname,tfogo_checklinkname0,with_musl
+Revision: b4d2d897ec06240b992b4042df43bb3e3502c55d
+CGO: enabled
+```
+
+出现 `with_tailscale` 字样即可
+
+:::
+
+相关配置如下
+
+```json
+{
+  "endpoints": [
+    {
+      "type": "tailscale",
+      "tag": "ts-ep",
+      "state_directory": "/etc/sing-box/tailscale",
+      "hostname": "openwrt",
+      "advertise_exit_node": true,
+      "advertise_routes": ["192.168.2.0/24"]
+    }
+  ]
+}
+```
+
+通告本机为出口节点，本机路由为 `192.168.2.0/24`
+
+客户端 tailscale 需要手动选择本机为出口节点，这样就可以实现魔法上网。
+
+初次启动，需要登陆
+
+```bash
+logread -f | grep "https"
+```
+
+在日志里寻找登录地址，按照指示操作即可
+
 ## 定时服务
 
 编辑 `cron` 脚本
