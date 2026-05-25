@@ -90,6 +90,10 @@ export default {
             link: '/notes/web-app/portainer.md',
           },
           {
+            text: 'Dockhand',
+            link: '/notes/web-app/dockhand.md',
+          },
+          {
             text: 'Nginx Proxy Manager',
             link: '/notes/web-app/nginx-proxy-manager.md',
           },
