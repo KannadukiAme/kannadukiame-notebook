@@ -17,6 +17,11 @@ services:
     volumes:
       - /root/copyparty/cfgdir:/cfg
       - /mnt/data:/w
+    command:
+      - '--rproxy=1'
+      - '--xff-src=172.18.0.0/16'
+      - '--xf-proto=x-forwarded-proto'
+      - '--xf-host=x-forwarded-host'
     environment:
       LD_PRELOAD: /usr/lib/libmimalloc-secure.so.NOPE
       # enable mimalloc by replacing "NOPE" with "2" for a nice speed-boost (will use twice as much ram)
@@ -46,7 +51,7 @@ networks:
 
 配置全局设置、账户、卷以及读写权限
 
-```conf
+```text
 [global]
   e2dsa  # enable file indexing and filesystem scanning
   e2ts   # and enable multimedia indexing
