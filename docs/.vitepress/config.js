@@ -98,6 +98,10 @@ export default {
             link: '/notes/web-app/nginx-proxy-manager.md',
           },
           {
+            text: 'Kavita',
+            link: '/notes/web-app/kavita.md',
+          },
+          {
             text: 'DDNS-GO',
             link: '/notes/web-app/ddns-go.md',
           },
