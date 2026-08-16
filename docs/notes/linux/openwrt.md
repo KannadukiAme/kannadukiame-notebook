@@ -8,7 +8,7 @@ OpenWrt 是开源的基于 Linux 的路由器系统，除官方版本，还有�
 
 推荐使用 ImmortalWrt，安装与配置均以此版本为例。
 
-最近更新版本 `OpenWrt 24.10`
+最近更新版本 `OpenWrt 25.12.1`
 
 **官方版**
 
@@ -127,9 +127,18 @@ config interface 'lan'
 
 也可以通过 web 后台管理界面直接修改 lan 口 IP
 
-### 系统扩容
+### 扩容
 
-默认 openwrt 镜像分配的初始空间较少，此时需要扩容
+默认 openwrt 镜像分配的初始空间较少，此时需要扩容。
+
+`ext4` 固件扩容十分容易，直接使用分区软件进行操作即可。而 `squashfs` 固件扩容操作较为复杂，一般主要有两种方案。
+
+#### overlay 分区扩容
+
+该方法同时也适用于以下固件
+
+- x86 架构的 `ext4` 固件
+- ARM 架构的 `ext4` 固件
 
 假设要扩容的存储设备是 `/dev/sda`
 
@@ -142,7 +151,24 @@ config interface 'lan'
 
 使用 `parted` 分区工具对 `/dev/sda` 进行扩容
 
-```bash
+::: code-group
+
+```bash [apk]
+# Install packages
+apk update
+apk add parted
+
+# Identify disk name and partition number
+parted -l -s
+
+# Expand root partition
+parted -f -s /dev/sda resizepart 2 100%
+
+# Apply changes
+reboot
+```
+
+```bash [opkg]
 # Install packages
 opkg update
 opkg install parted
@@ -157,11 +183,30 @@ parted -f -s /dev/sda resizepart 2 100%
 reboot
 ```
 
+:::
+
 2. 扩展 root 文件系统
 
 使用 `losetup` 映射 `/dev/loop0` 到 `/dev/sda2` 并用 `resize2fs` 扩展 `/dev/loop0`
 
-```bash
+::: code-group
+
+```bash [apk]
+# Install packages
+apk update
+apk add losetup resize2fs
+
+# Map loop device to root partition
+losetup /dev/loop0 /dev/sda2 2> /dev/null
+
+# Expand root filesystem
+resize2fs -f /dev/loop0
+
+# Apply changes
+reboot
+```
+
+```bash [opkg]
 # Install packages
 opkg update
 opkg install losetup resize2fs
@@ -175,6 +220,107 @@ resize2fs -f /dev/loop0
 # Apply changes
 reboot
 ```
+
+:::
+
+::: details 针对 f2fs 文件系统的 overlay 分区
+如果是 ARM 架构的 squashfs 固件，则需要用另外的办法扩容，因其使用 f2fs 文件系统的分区，之前的 `resize2fs` 命令不适用这类分区。
+
+这里感谢 `Sm00shed` 大神提供的解决方案和脚本。
+
+```bash
+#!/bin/sh
+echo "=== Installing required packages ==="
+apk update
+apk add losetup f2fs-tools
+
+echo -e "\n=== Current status ==="
+df -h | grep -E '(overlay|Filesystem)'
+mount | grep overlay
+
+echo -e "\n=== Getting loop device info ==="
+LOOP="$(losetup -n -O NAME | sort | sed -n -e "1p")"
+echo "Current LOOP: $LOOP"
+ROOT="$(losetup -n -O BACK-FILE ${LOOP} | sed -e "s|^|/dev|")"
+echo "ROOT device: $ROOT"
+OFFS="$(losetup -n -O OFFSET ${LOOP})"
+echo "Offset: $OFFS"
+
+echo -e "\n=== Creating new loop device ==="
+NEW_LOOP="$(losetup -f)"
+echo "New LOOP: $NEW_LOOP"
+losetup -o ${OFFS} ${NEW_LOOP} ${ROOT}
+
+echo -e "\n=== Filesystem check ==="
+fsck.f2fs -f ${NEW_LOOP}
+
+echo -e "\n=== Mount/Unmount trick ==="
+mount ${NEW_LOOP} /mnt && echo "Mount: OK" || echo "Mount: FAILED"
+umount ${NEW_LOOP} && echo "Unmount: OK" || echo "Unmount: FAILED"
+
+echo -e "\n=== Resizing f2fs ==="
+resize.f2fs ${NEW_LOOP}
+
+echo -e "\n=== Done - rebooting ==="
+reboot
+```
+
+:::
+
+#### extroot 扩容方案
+
+这个方案主要流程如下
+
+1. 新建分区格式化为 ext4 分区
+2. 将原有 overlay 分区数据复制到新分区
+3. 挂载新的 overlay 分区
+
+除此之外，也可以将 overlay 分区挂载到U盘等外部存储。
+
+1. 新建分区格式化为 ext4 分区
+
+```bash
+fdisk /dev/mmcblk0 # 对当前分区进行操作
+
+n # 新建分区
+
+...
+
+mkfs.ext4 /dev/mmcblk0p3
+
+```
+
+2. 将原有 overlay 分区数据复制到新分区
+
+```bash
+# 挂载新分区到临时目录
+mkdir -p /mnt/mmcblk0p3
+mount /dev/mmcblk0p3 /mnt/mmcblk0p3
+
+# 将当前的 /overlay 内容全量复制到新分区
+tar -C /overlay -cvf - . | tar -C /mnt/mmcblk0p3 -xf -
+
+# 取消挂载
+umount /mnt/mmcblk0p3
+```
+
+3. 挂载新的 overlay 分区
+
+```bash
+# 自动生成或配置挂载点
+block detect > /etc/config/fstab
+```
+
+编辑 `/etc/config/fstab` 找到新分区修改如下
+
+```text
+config mount
+    option target '/overlay'
+    option uuid '新分区UUID'
+    option enabled '1'
+```
+
+重启即可生效
 
 ### 自定义域名映射
 
@@ -213,6 +359,10 @@ dnsmasq 可以自定义域名映射，但需要设置 DNS 重定向
 ### 配置 IPv6
 
 等待实践...
+
+### 安装必要包
+
+- `openssh-sftp-server` 用 sftp 上传文件
 
 ## 其他
 
