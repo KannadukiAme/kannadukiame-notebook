@@ -108,6 +108,20 @@ VirtualBox 需要 img 镜像 512 字节对齐,需要先将 img 镜像进行字�
 
 首次进入系统，必要的配置如下
 
+### 换源
+
+如果当前源不可用或者非常慢，务必换成其他镜像源
+
+ImmortalWrt 镜像列表在这里 https://help.mirrors.cernet.edu.cn/immortalwrt/
+
+使用下列命令一键换源
+
+```bash
+sed -e 's,https://downloads.immortalwrt.org,https://mirrors.cernet.edu.cn/immortalwrt,g' \
+    -e 's,https://mirrors.vsean.net/openwrt,https://mirrors.cernet.edu.cn/immortalwrt,g' \
+    -i.bak /etc/apk/repositories.d/distfeeds.list
+```
+
 ### 修改 lan 口 IP
 
 OpenWrt 的 lan 口默认地址为 192.168.1.1，需要根据实际情况修改该默认 IP
@@ -363,6 +377,8 @@ dnsmasq 可以自定义域名映射，但需要设置 DNS 重定向
 ### 安装必要包
 
 - `openssh-sftp-server` 用 sftp 上传文件
+- `luci-app-ttyd` Web 终端
+- `luci-theme-aurora` OpenWrt 主题 (通过第三方脚本安装)
 
 ## 其他
 
